@@ -6,7 +6,12 @@
 #include <iostream>
 #include <cereal/cereal.hpp>
 #include <cereal/archives/json.hpp>
+
+#ifdef EMSCRIPTEN
 #include <emscripten/emscripten.h>
+#else
+#define EMSCRIPTEN_KEEPALIVE
+#endif
 
 using namespace std;
 
@@ -23,7 +28,7 @@ int main(int argc, char **argv)
 {
     initCom();
 
-    Component *speaker1 = newCom("Speaker"); // unique_ptr が危ないがテストコードなので。
+    Component *speaker1 = newCom("Speaker");
 
     {
         Component *input1 = newCom("Input");

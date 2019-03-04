@@ -1,21 +1,17 @@
-OPTIONS := -s WASM=1 -s NO_EXIT_RUNTIME=1 -s DISABLE_EXCEPTION_CATCHING=0 -s ASSERTIONS=2 \
-		-s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]' \
-		-O3 -std=c++17 -Wno-exceptions \
-		-I $(PWD) -I $(PWD)/cereal/include
+CC := g++
+PLATFORM_OPTIONS :=
 
-all: ../html/module.js
+#CC := emcc
+#PLATFORM_OPTIONS := -s WASM=1 -s NO_EXIT_RUNTIME=1 -s DISABLE_EXCEPTION_CATCHING=0 -s ASSERTIONS=2 \
+	-s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]' 
+
+OPTIONS := -O3 -std=c++17 -I $(PWD) -I $(PWD)/cereal/include
+
+all: synthcore
 
 PHONY: clean
 clean:
-	-rm ../html/module.*
-	-rm core/core.o
-	-rm com/com.o
+	-rm synthcore
 
-../html/module.js: Makefile module.cpp core/core.o com/com.o
-	emcc $(OPTIONS) -o ../html/module.js module.cpp core/core.o com/com.o
-
-core/core.o: Makefile core/*.?pp
-	emcc $(OPTIONS) -o core/core.o core/*.cpp
-
-com/com.o: Makefile com/*.?pp
-	emcc $(OPTIONS) -o com/com.o com/*.cpp
+synthcore: Makefile synthcore.cpp core/*.?pp com/*.?pp
+	$(CC) $(OPTIONS) $(PLATFORM_OPTIONS) -o synthcore synthcore.cpp core/*.cpp com/*.cpp -luuid -lm
