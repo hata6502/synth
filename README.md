@@ -1,0 +1,2 @@
+# SynthCore
+CUI シンセサイザー。
