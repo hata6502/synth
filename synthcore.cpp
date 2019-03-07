@@ -52,6 +52,7 @@ int main(int argc, char **argv)
 
         speaker1 = speaker2;
     }*/
+    cout << "SynthCore" << endl; // for test
     string request;
     while (!cin.eof())
     {
