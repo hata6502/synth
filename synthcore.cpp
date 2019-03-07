@@ -4,6 +4,7 @@
 #include <exception>
 #include <sstream>
 #include <iostream>
+#include <string>
 #include <cereal/cereal.hpp>
 #include <cereal/archives/json.hpp>
 
@@ -28,7 +29,7 @@ int main(int argc, char **argv)
 {
     initCom();
 
-    Component *speaker1 = newCom("Speaker");
+    /*Component *speaker1 = newCom("Speaker");
 
     {
         Component *input1 = newCom("Input");
@@ -42,7 +43,7 @@ int main(int argc, char **argv)
         g_sketch.appendCom(speaker1);
     }
 
-    for (int i = 1; i < 50 /*speakerの数*/; i++)
+    for (int i = 1; i < 50; i++)
     {
         Component *speaker2 = newCom("Speaker");
         g_sketch.appendCom(speaker2);
@@ -50,6 +51,22 @@ int main(int argc, char **argv)
         speaker2->ins[speaker2->getIn()["sound"]]->connect(speaker1->outs[speaker1->getOut()["thru"]]);
 
         speaker1 = speaker2;
+    }*/
+    string request;
+    while (!cin.eof())
+    {
+        char ch;
+
+        cin >> ch;
+        if (ch == '\0')
+        {
+            cout << request << endl;
+            request = "";
+        }
+        else
+        {
+            request += ch;
+        }
     }
 
     return 0;
