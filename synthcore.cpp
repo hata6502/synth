@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iostream>
 #include <string>
+#include <vector>
 #include <cereal/cereal.hpp>
 #include <cereal/archives/json.hpp>
 
@@ -16,14 +17,26 @@
 
 using namespace std;
 
+struct Request
+{
+    vector<string> args;
+
+    template <class Archive>
+    void serialize(Archive &archive)
+    {
+        archive(CEREAL_NVP(args));
+    }
+};
+
 extern "C"
 {
     int main(int argc, char **argv);
-    EMSCRIPTEN_KEEPALIVE void onSimStart();
+    /*EMSCRIPTEN_KEEPALIVE void onSimStart();
     EMSCRIPTEN_KEEPALIVE float *onAudioProcess(double dt);
     EMSCRIPTEN_KEEPALIVE void onSimEnd();
-    EMSCRIPTEN_KEEPALIVE const char *export_();
+    EMSCRIPTEN_KEEPALIVE const char *export_();*/
 }
+void execute(Request &request);
 
 int main(int argc, char **argv)
 {
@@ -52,28 +65,53 @@ int main(int argc, char **argv)
 
         speaker1 = speaker2;
     }*/
-    cout << "SynthCore" << endl; // for test
-    string request;
+
+    string requestJson;
     while (!cin.eof())
     {
-        char ch;
+        try
+        {
+            char ch;
 
-        cin >> ch;
-        if (ch == '\0')
-        {
-            cout << request << endl;
-            request = "";
+            cin >> ch;
+            if (ch == '\0')
+            {
+                Request request;
+
+                stringstream stream(requestJson);
+                {
+                    cereal::JSONInputArchive archive(stream);
+                    archive(CEREAL_NVP(request));
+                }
+                requestJson = "";
+
+                execute(request);
+            }
+            else
+            {
+                requestJson += ch;
+            }
         }
-        else
+        catch (exception &e)
         {
-            request += ch;
+            cerr << e.what() << endl;
         }
     }
 
     return 0;
 }
 
-EMSCRIPTEN_KEEPALIVE void onSimStart()
+void execute(Request &request)
+{
+    stringstream stream;
+    {
+        cereal::JSONOutputArchive archive(stream);
+        archive(CEREAL_NVP(request));
+    }
+    cout << stream.str() << '\0';
+}
+
+/*EMSCRIPTEN_KEEPALIVE void onSimStart()
 {
     g_sketch.onSimStart();
 }
@@ -118,4 +156,4 @@ EMSCRIPTEN_KEEPALIVE const char *export_()
     }
 
     return stream.str().c_str();
-}
+}*/
