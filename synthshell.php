@@ -1,4 +1,5 @@
 <?php
+stream_set_blocking(STDIN, false);
 $synthcore = proc_open('./synthcore', [
     '0' => ['pipe', 'r'],   // stdin
     '1' => ['pipe', 'w'],   // stdout
