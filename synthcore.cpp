@@ -4,6 +4,7 @@
 #include <com/com.hpp>
 
 #include <exception>
+#include <stdexcept>
 #include <sstream>
 #include <iostream>
 #include <cereal/cereal.hpp>
@@ -82,9 +83,7 @@ int main(int argc, char **argv)
             execute(request);
         }
         else
-        {
             requestJson += ch;
-        }
     }
 
     return 0;
@@ -92,16 +91,29 @@ int main(int argc, char **argv)
 
 void execute(Request &request)
 {
-    // ここの部分を関数ポインタ配列で書き直す。
-    if (request.args[0] == "addcom")
+    try
     {
-        addcom(request.args);
-        return;
-    }
+        if (!request.args.size())
+        {
+            throw runtime_error("構文: (コマンド) (引数1) (引数2) ...");
+        }
 
-    ErrorResponse response;
-    response.error = "Undefined command. ";
-    respond(response);
+        // ここの部分を関数ポインタ配列で書き直す。
+        if (request.args[0] == "addcom")
+        {
+            addcom(request.args);
+            return;
+        }
+
+        throw runtime_error("不明なコマンドです。");
+    }
+    catch (exception &e)
+    {
+        ErrorResponse response;
+
+        response.error = e.what();
+        respond(response);
+    }
 }
 
 template <typename T>
@@ -117,8 +129,17 @@ void respond(T &response)
 
 void addcom(vector<string> &args)
 {
-    ErrorResponse response;
-    response.error = "addcom";
+    if (args.size() != 2)
+        throw runtime_error("構文: addcom (部品名)");
+
+    Component *com = newCom(args[1]);
+    if (!com)
+        throw runtime_error("不明な部品名です。");
+
+    g_sketch.appendCom(com);
+
+    AddcomResponse response;
+    response.uuid = uuidStr(com->id);
     respond(response);
 }
 

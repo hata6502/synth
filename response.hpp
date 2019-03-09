@@ -15,3 +15,14 @@ struct ErrorResponse
         archive(CEREAL_NVP(error));
     }
 };
+
+struct AddcomResponse
+{
+    string uuid;
+
+    template <class Archive>
+    void serialize(Archive &archive)
+    {
+        archive(CEREAL_NVP(uuid));
+    }
+};
