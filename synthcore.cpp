@@ -4,6 +4,8 @@
 #include <exception>
 #include <sstream>
 #include <iostream>
+#include <string>
+#include <vector>
 #include <cereal/cereal.hpp>
 #include <cereal/archives/json.hpp>
 
@@ -15,20 +17,32 @@
 
 using namespace std;
 
+struct Request
+{
+    vector<string> args;
+
+    template <class Archive>
+    void serialize(Archive &archive)
+    {
+        archive(CEREAL_NVP(args));
+    }
+};
+
 extern "C"
 {
     int main(int argc, char **argv);
-    EMSCRIPTEN_KEEPALIVE void onSimStart();
+    /*EMSCRIPTEN_KEEPALIVE void onSimStart();
     EMSCRIPTEN_KEEPALIVE float *onAudioProcess(double dt);
     EMSCRIPTEN_KEEPALIVE void onSimEnd();
-    EMSCRIPTEN_KEEPALIVE const char *export_();
+    EMSCRIPTEN_KEEPALIVE const char *export_();*/
 }
+void execute(Request &request);
 
 int main(int argc, char **argv)
 {
     initCom();
 
-    Component *speaker1 = newCom("Speaker");
+    /*Component *speaker1 = newCom("Speaker");
 
     {
         Component *input1 = newCom("Input");
@@ -42,7 +56,7 @@ int main(int argc, char **argv)
         g_sketch.appendCom(speaker1);
     }
 
-    for (int i = 1; i < 50 /*speakerの数*/; i++)
+    for (int i = 1; i < 50; i++)
     {
         Component *speaker2 = newCom("Speaker");
         g_sketch.appendCom(speaker2);
@@ -50,12 +64,54 @@ int main(int argc, char **argv)
         speaker2->ins[speaker2->getIn()["sound"]]->connect(speaker1->outs[speaker1->getOut()["thru"]]);
 
         speaker1 = speaker2;
+    }*/
+
+    string requestJson;
+    while (!cin.eof())
+    {
+        try
+        {
+            char ch;
+
+            cin >> ch;
+            if (ch == '\0')
+            {
+                Request request;
+
+                stringstream stream(requestJson);
+                {
+                    cereal::JSONInputArchive archive(stream);
+                    archive(CEREAL_NVP(request));
+                }
+                requestJson = "";
+
+                execute(request);
+            }
+            else
+            {
+                requestJson += ch;
+            }
+        }
+        catch (exception &e)
+        {
+            cerr << e.what() << endl;
+        }
     }
 
     return 0;
 }
 
-EMSCRIPTEN_KEEPALIVE void onSimStart()
+void execute(Request &request)
+{
+    stringstream stream;
+    {
+        cereal::JSONOutputArchive archive(stream);
+        archive(CEREAL_NVP(request));
+    }
+    cout << stream.str() << '\0';
+}
+
+/*EMSCRIPTEN_KEEPALIVE void onSimStart()
 {
     g_sketch.onSimStart();
 }
@@ -100,4 +156,4 @@ EMSCRIPTEN_KEEPALIVE const char *export_()
     }
 
     return stream.str().c_str();
-}
+}*/
