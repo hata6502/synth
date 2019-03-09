@@ -1,11 +1,11 @@
+#include <request.hpp>
+#include <response.hpp>
 #include <core/core.hpp>
 #include <com/com.hpp>
 
 #include <exception>
 #include <sstream>
 #include <iostream>
-#include <string>
-#include <vector>
 #include <cereal/cereal.hpp>
 #include <cereal/archives/json.hpp>
 
@@ -17,26 +17,14 @@
 
 using namespace std;
 
-struct Request
-{
-    vector<string> args;
-
-    template <class Archive>
-    void serialize(Archive &archive)
-    {
-        archive(CEREAL_NVP(args));
-    }
-};
-
 extern "C"
 {
     int main(int argc, char **argv);
-    /*EMSCRIPTEN_KEEPALIVE void onSimStart();
-    EMSCRIPTEN_KEEPALIVE float *onAudioProcess(double dt);
-    EMSCRIPTEN_KEEPALIVE void onSimEnd();
-    EMSCRIPTEN_KEEPALIVE const char *export_();*/
 }
 void execute(Request &request);
+template <typename T>
+void respond(T &response);
+void addcom(vector<string> &args);
 
 int main(int argc, char **argv)
 {
@@ -69,32 +57,33 @@ int main(int argc, char **argv)
     string requestJson;
     while (!cin.eof())
     {
-        try
+        char ch;
+
+        cin >> ch;
+        if (ch == '\0')
         {
-            char ch;
+            Request request;
 
-            cin >> ch;
-            if (ch == '\0')
+            stringstream stream(requestJson);
+            try
             {
-                Request request;
-
-                stringstream stream(requestJson);
-                {
-                    cereal::JSONInputArchive archive(stream);
-                    archive(CEREAL_NVP(request));
-                }
-                requestJson = "";
-
-                execute(request);
+                cereal::JSONInputArchive archive(stream);
+                archive(CEREAL_NVP(request));
             }
-            else
+            catch (exception &e)
             {
-                requestJson += ch;
+                ErrorResponse response;
+
+                response.error = e.what();
+                respond(response);
             }
+            requestJson = "";
+
+            execute(request);
         }
-        catch (exception &e)
+        else
         {
-            cerr << e.what() << endl;
+            requestJson += ch;
         }
     }
 
@@ -103,12 +92,34 @@ int main(int argc, char **argv)
 
 void execute(Request &request)
 {
+    // ここの部分を関数ポインタ配列で書き直す。
+    if (request.args[0] == "addcom")
+    {
+        addcom(request.args);
+        return;
+    }
+
+    ErrorResponse response;
+    response.error = "Undefined command. ";
+    respond(response);
+}
+
+template <typename T>
+void respond(T &response)
+{
     stringstream stream;
     {
         cereal::JSONOutputArchive archive(stream);
-        archive(CEREAL_NVP(request));
+        archive(CEREAL_NVP(response));
     }
     cout << stream.str() << '\0';
+}
+
+void addcom(vector<string> &args)
+{
+    ErrorResponse response;
+    response.error = "addcom";
+    respond(response);
 }
 
 /*EMSCRIPTEN_KEEPALIVE void onSimStart()
