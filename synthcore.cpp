@@ -95,7 +95,7 @@ void execute(Request &request)
     {
         if (!request.args.size())
         {
-            throw runtime_error("構文: (コマンド) (引数1) (引数2) ...");
+            throw runtime_error("");
         }
 
         // ここの部分を関数ポインタ配列で書き直す。
@@ -105,7 +105,7 @@ void execute(Request &request)
             return;
         }
 
-        throw runtime_error("不明なコマンドです。");
+        throw runtime_error("不明なコマンドです。\n");
     }
     catch (exception &e)
     {
@@ -130,11 +130,11 @@ void respond(T &response)
 void addcom(vector<string> &args)
 {
     if (args.size() != 2)
-        throw runtime_error("構文: addcom (部品名)");
+        throw runtime_error("構文: addcom (部品名)\n");
 
     Component *com = newCom(args[1]);
     if (!com)
-        throw runtime_error("不明な部品名です。");
+        throw runtime_error("不明な部品名です。\n");
 
     g_sketch.appendCom(com);
 
