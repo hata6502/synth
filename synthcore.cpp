@@ -55,35 +55,32 @@ int main(int argc, char **argv)
         speaker1 = speaker2;
     }*/
 
-    string requestJson;
     while (!cin.eof())
     {
         char ch;
+        string requestJson;
+        while (cin >> ch && ch != '\0')
+        {
+            requestJson += ch;
+        }
 
-        cin >> ch;
-        if (ch == '\0')
+        try
         {
             Request request;
-
             stringstream stream(requestJson);
-            try
             {
                 cereal::JSONInputArchive archive(stream);
                 archive(CEREAL_NVP(request));
             }
-            catch (exception &e)
-            {
-                ErrorResponse response;
-
-                response.error = e.what();
-                respond(response);
-            }
-            requestJson = "";
-
             execute(request);
         }
-        else
-            requestJson += ch;
+        catch (exception &e)
+        {
+            ErrorResponse response;
+
+            response.error = e.what();
+            respond(response);
+        }
     }
 
     return 0;
