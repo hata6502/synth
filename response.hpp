@@ -41,11 +41,45 @@ struct LscomResponse
         }
     };
 
-    vector<Component> coms;
+    vector<Component> components;
 
     template <class Archive>
     void serialize(Archive &archive)
     {
-        archive(CEREAL_NVP(coms));
+        archive(CEREAL_NVP(components));
+    }
+};
+
+struct LsportResponse
+{
+    struct PortIn
+    {
+        string uuid;
+
+        template <class Archive>
+        void serialize(Archive &archive)
+        {
+            archive(CEREAL_NVP(uuid));
+        }
+    };
+
+    struct PortOut
+    {
+        string uuid;
+
+        template <class Archive>
+        void serialize(Archive &archive)
+        {
+            archive(CEREAL_NVP(uuid));
+        }
+    };
+
+    vector<PortIn> inputs;
+    vector<PortOut> outputs;
+
+    template <class Archive>
+    void serialize(Archive &archive)
+    {
+        archive(CEREAL_NVP(inputs), CEREAL_NVP(outputs));
     }
 };

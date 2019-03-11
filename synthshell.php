@@ -62,7 +62,7 @@ function printResponse($response, $level)
         echo "${key}: ";
         if (is_array($value) || is_object($value)) {
             echo "\n";
-            printResponse($value, $level + 2);
+            printResponse($value, $level + strlen($key) + 2);
         } else {
             echo print_r($value, true)."\n";
         }

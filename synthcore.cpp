@@ -27,6 +27,7 @@ template <typename T>
 void respond(T &response);
 void addcom(vector<string> &args);
 void lscom(vector<string> &args);
+void lsport(vector<string> &args);
 
 int main(int argc, char **argv)
 {
@@ -45,16 +46,7 @@ int main(int argc, char **argv)
         g_sketch.appendCom(sine1);
         g_sketch.appendCom(speaker1);
     }
-
-    for (int i = 1; i < 50; i++)
-    {
-        Component *speaker2 = newCom("Speaker");
-        g_sketch.appendCom(speaker2);
-
-        speaker2->ins[speaker2->getIn()["sound"]]->connect(speaker1->outs[speaker1->getOut()["thru"]]);
-
-        speaker1 = speaker2;
-    }*/
+*/
 
     while (!cin.eof())
     {
@@ -107,6 +99,11 @@ void execute(Request &request)
             lscom(request.args);
             return;
         }
+        else if (request.args[0] == "lsport")
+        {
+            lsport(request.args);
+            return;
+        }
 
         throw runtime_error("不明なコマンドです。\n");
     }
@@ -133,11 +130,15 @@ void respond(T &response)
 void addcom(vector<string> &args)
 {
     if (args.size() != 2)
+    {
         throw runtime_error("構文: addcom (部品名)\n");
+    }
 
     Component *com = newCom(args[1]);
     if (!com)
+    {
         throw runtime_error("不明な部品名です。\n");
+    }
 
     g_sketch.appendCom(com);
 
@@ -156,7 +157,47 @@ void lscom(vector<string> &args)
 
         comResponse.uuid = uuidStr(com->id);
         comResponse.type = com->com_name;
-        response.coms.push_back(comResponse);
+        response.components.push_back(comResponse);
+    }
+
+    respond(response);
+}
+
+void lsport(vector<string> &args)
+{
+    if (args.size() != 2)
+    {
+        throw runtime_error("構文: lsport (部品の UUID)\n");
+    }
+
+    uuid_t uuid;
+    if (parseUuid(args[1], &uuid))
+    {
+        throw runtime_error("不正な UUID です。\n");
+    }
+
+    Component *com = searchCom(uuid);
+    if (!com)
+    {
+        throw runtime_error("存在しない部品です。\n");
+    }
+
+    LsportResponse response;
+
+    for (PortIn_p in : com->ins)
+    {
+        LsportResponse::PortIn inResponse;
+
+        inResponse.uuid = uuidStr(in->id);
+        response.inputs.push_back(inResponse);
+    }
+
+    for (PortOut_p out : com->outs)
+    {
+        LsportResponse::PortOut outResponse;
+
+        outResponse.uuid = uuidStr(out->id);
+        response.outputs.push_back(outResponse);
     }
 
     respond(response);

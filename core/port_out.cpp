@@ -2,6 +2,7 @@
 
 PortOut::PortOut() : int_("")
 {
+	uuid_generate(this->id);
 	this->initVal();
 }
 
