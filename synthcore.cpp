@@ -26,6 +26,7 @@ void execute(Request &request);
 template <typename T>
 void respond(T &response);
 void addcom(vector<string> &args);
+void lscom(vector<string> &args);
 
 int main(int argc, char **argv)
 {
@@ -101,6 +102,11 @@ void execute(Request &request)
             addcom(request.args);
             return;
         }
+        else if (request.args[0] == "lscom")
+        {
+            lscom(request.args);
+            return;
+        }
 
         throw runtime_error("不明なコマンドです。\n");
     }
@@ -137,6 +143,22 @@ void addcom(vector<string> &args)
 
     AddcomResponse response;
     response.uuid = uuidStr(com->id);
+    respond(response);
+}
+
+void lscom(vector<string> &args)
+{
+    LscomResponse response;
+
+    for (Component_up &com : g_sketch.coms)
+    {
+        LscomResponse::Component comResponse;
+
+        comResponse.uuid = uuidStr(com->id);
+        comResponse.type = com->com_name;
+        response.coms.push_back(comResponse);
+    }
+
     respond(response);
 }
 

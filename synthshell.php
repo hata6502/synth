@@ -49,8 +49,22 @@ function receive($response)
     if (isset($response->error)) {
         echo $response->error;
     } else {
-        foreach ($response as $key => $value) {
-            echo "${key}: ".print_r($value, true)."\n";
+        printResponse($response, 0);
+    }
+}
+
+function printResponse($response, $level)
+{
+    foreach ($response as $key => $value) {
+        for ($i = 0; $i < $level; $i++) {
+            echo " ";
+        }
+        echo "${key}: ";
+        if (is_array($value) || is_object($value)) {
+            echo "\n";
+            printResponse($value, $level + 2);
+        } else {
+            echo print_r($value, true)."\n";
         }
     }
 }

@@ -25,7 +25,6 @@ class Component
   int loopcnt;
 
 protected:
-  string com_name;
   map<string, string> extends;
 
   void update(deque<Component *> &chcoms);
@@ -38,6 +37,7 @@ protected:
 
 public:
   uuid_t id;
+  string com_name;
   vector<PortIn_p> ins;
   vector<PortOut_p> outs;
 
