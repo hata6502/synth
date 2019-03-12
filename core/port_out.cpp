@@ -1,6 +1,6 @@
 #include "port_out.hpp"
 
-PortOut::PortOut() : int_("")
+PortOut::PortOut() : int_(false)
 {
 	uuid_generate(this->id);
 	this->initVal();
