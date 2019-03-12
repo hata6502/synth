@@ -16,6 +16,14 @@ struct ErrorResponse
     }
 };
 
+struct EmptyResponse
+{
+    template <class Archive>
+    void serialize(Archive &archive)
+    {
+    }
+};
+
 struct AddcomResponse
 {
     string uuid;

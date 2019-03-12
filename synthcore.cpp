@@ -28,6 +28,7 @@ void respond(T &response);
 void addcom(vector<string> &args);
 void lscom(vector<string> &args);
 void lsport(vector<string> &args);
+void connect(vector<string> &args);
 
 int main(int argc, char **argv)
 {
@@ -104,6 +105,11 @@ void execute(Request &request)
             lsport(request.args);
             return;
         }
+        else if (request.args[0] == "connect")
+        {
+            connect(request.args);
+            return;
+        }
 
         throw runtime_error("不明なコマンドです。\n");
     }
@@ -167,13 +173,13 @@ void lsport(vector<string> &args)
 {
     if (args.size() != 2)
     {
-        throw runtime_error("構文: lsport (部品の UUID)\n");
+        throw runtime_error("構文: lsport (部品 UUID)\n");
     }
 
     uuid_t uuid;
     if (parseUuid(args[1], &uuid))
     {
-        throw runtime_error("不正な UUID です。\n");
+        throw runtime_error("不正な部品 UUID です。\n");
     }
 
     Component *com = searchCom(uuid);
@@ -208,6 +214,40 @@ void lsport(vector<string> &args)
         response.outputs.push_back(outResponse);
     }
 
+    respond(response);
+}
+
+void connect(vector<string> &args)
+{
+    if (args.size() != 3)
+    {
+        throw runtime_error("構文: connect (出力ポート UUID) (入力ポート UUID)\n");
+    }
+
+    uuid_t out_uuid, in_uuid;
+    if (parseUuid(args[1], &out_uuid))
+    {
+        throw runtime_error("不正な出力ポート UUID です。\n");
+    }
+    if (parseUuid(args[2], &in_uuid))
+    {
+        throw runtime_error("不正な入力ポート UUID です。\n");
+    }
+
+    PortOut_p out = searchPortOut(out_uuid);
+    if (!out)
+    {
+        throw runtime_error("存在しない出力ポートです。\n");
+    }
+    PortIn_p in = searchPortIn(in_uuid);
+    if (!in)
+    {
+        throw runtime_error("存在しない入力ポートです。\n");
+    }
+
+    in->connect(out);
+
+    EmptyResponse response;
     respond(response);
 }
 
