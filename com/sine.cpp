@@ -3,15 +3,15 @@
 #include <math.h>
 
 #define IN_FREQ 0
-map<string, int> Sine::getIn()
+vector<string> Sine::getIn()
 {
-	return map<string, int>{{"freq", IN_FREQ}};
+	return vector<string>{"freq"};
 }
 
 #define OUT_SINE 0
-map<string, int> Sine::getOut()
+vector<string> Sine::getOut()
 {
-	return map<string, int>{{"sine", OUT_SINE}};
+	return vector<string>{"sine"};
 }
 
 Sine::Sine() : Component()

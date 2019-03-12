@@ -1,14 +1,14 @@
 #include "input.hpp"
 
-map<string, int> Input::getIn()
+vector<string> Input::getIn()
 {
-	return map<string, int>();
+	return vector<string>();
 }
 
 #define OUT_VALUE 0
-map<string, int> Input::getOut()
+vector<string> Input::getOut()
 {
-	return map<string, int>{{"value", OUT_VALUE}};
+	return vector<string>{"value"};
 }
 
 double Input::setValue(double value)

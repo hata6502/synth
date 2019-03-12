@@ -1,15 +1,15 @@
 #include "speaker.hpp"
 
 #define IN_SOUND 0
-map<string, int> Speaker::getIn()
+vector<string> Speaker::getIn()
 {
-	return map<string, int>{{"sound", IN_SOUND}};
+	return vector<string>{"sound"};
 }
 
 #define OUT_THRU 0
-map<string, int> Speaker::getOut()
+vector<string> Speaker::getOut()
 {
-	return map<string, int>{{"thru", OUT_THRU}};
+	return vector<string>{"thru"};
 }
 
 Speaker::Speaker() : Component()

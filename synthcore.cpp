@@ -182,21 +182,29 @@ void lsport(vector<string> &args)
         throw runtime_error("存在しない部品です。\n");
     }
 
+    int i;
     LsportResponse response;
+    vector<string> port_types;
 
+    i = 0;
+    port_types = com->getIn();
     for (PortIn_p in : com->ins)
     {
         LsportResponse::PortIn inResponse;
 
         inResponse.uuid = uuidStr(in->id);
+        inResponse.type = port_types[i++];
         response.inputs.push_back(inResponse);
     }
 
+    i = 0;
+    port_types = com->getOut();
     for (PortOut_p out : com->outs)
     {
         LsportResponse::PortOut outResponse;
 
         outResponse.uuid = uuidStr(out->id);
+        outResponse.type = port_types[i++];
         response.outputs.push_back(outResponse);
     }
 

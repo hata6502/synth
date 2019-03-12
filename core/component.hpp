@@ -6,7 +6,6 @@ class Component;
 
 #include <vector>
 #include <deque>
-#include <map>
 #include <memory>
 #include <string>
 #include <uuid/uuid.h>
@@ -44,8 +43,8 @@ public:
   Component();
   vector<PortIn_p> getIntIns();
   vector<PortOut_p> getIntOuts();
-  virtual map<string, int> getIn(); // map だと重いし冗長な記述になるため、引数string戻り値ポートに変更予定。
-  virtual map<string, int> getOut();
+  virtual vector<string> getIn();
+  virtual vector<string> getOut();
   void initPort(int in_n, int out_n);
   void onSimStart();
   virtual void onChangeIn(deque<Component *> &chcoms);

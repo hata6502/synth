@@ -55,22 +55,24 @@ struct LsportResponse
     struct PortIn
     {
         string uuid;
+        string type;
 
         template <class Archive>
         void serialize(Archive &archive)
         {
-            archive(CEREAL_NVP(uuid));
+            archive(CEREAL_NVP(uuid), CEREAL_NVP(type));
         }
     };
 
     struct PortOut
     {
         string uuid;
+        string type;
 
         template <class Archive>
         void serialize(Archive &archive)
         {
-            archive(CEREAL_NVP(uuid));
+            archive(CEREAL_NVP(uuid), CEREAL_NVP(type));
         }
     };
 
