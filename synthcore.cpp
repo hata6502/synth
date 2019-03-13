@@ -1,5 +1,5 @@
 #include <core/core.hpp>
-#include <com/com.hpp>
+#include <component/component.hpp>
 #include <command/command.hpp>
 #include <io.hpp>
 

@@ -1,4 +1,4 @@
-#include "com.hpp"
+#include "component.hpp"
 
 #include <vector>
 #include <string>

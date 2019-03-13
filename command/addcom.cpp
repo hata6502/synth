@@ -2,7 +2,7 @@
 
 #include <io.hpp>
 #include <core/core.hpp>
-#include <com/com.hpp>
+#include <component/component.hpp>
 
 void addcomHandler(vector<string> &args)
 {
