@@ -5,7 +5,10 @@
 
 using namespace std;
 
-void addcom(vector<string> &args);
-void lscom(vector<string> &args);
-void lsport(vector<string> &args);
-void connect(vector<string> &args);
+struct Command
+{
+    string name;
+    void (*handler)(vector<string> &args);
+};
+
+extern vector<Command> g_commands;

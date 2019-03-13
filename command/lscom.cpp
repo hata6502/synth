@@ -3,7 +3,7 @@
 #include <io.hpp>
 #include <core/core.hpp>
 
-void lscom(vector<string> &args)
+void lscomHandler(vector<string> &args)
 {
     LscomResponse response;
 

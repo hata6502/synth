@@ -3,7 +3,7 @@
 #include <io.hpp>
 #include <core/core.hpp>
 
-void connect(vector<string> &args)
+void connectHandler(vector<string> &args)
 {
     if (args.size() != 3)
     {

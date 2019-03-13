@@ -52,26 +52,13 @@ void execute(Request &request)
             throw runtime_error("");
         }
 
-        // ここの部分を関数ポインタ配列で書き直す。
-        if (request.args[0] == "addcom")
+        for (Command &command : g_commands)
         {
-            addcom(request.args);
-            return;
-        }
-        else if (request.args[0] == "lscom")
-        {
-            lscom(request.args);
-            return;
-        }
-        else if (request.args[0] == "lsport")
-        {
-            lsport(request.args);
-            return;
-        }
-        else if (request.args[0] == "connect")
-        {
-            connect(request.args);
-            return;
+            if (request.args[0] == command.name)
+            {
+                command.handler(request.args);
+                return;
+            }
         }
 
         throw runtime_error("不明なコマンドです。\n");

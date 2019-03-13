@@ -4,7 +4,7 @@
 #include <core/core.hpp>
 #include <com/com.hpp>
 
-void addcom(vector<string> &args)
+void addcomHandler(vector<string> &args)
 {
     if (args.size() != 2)
     {

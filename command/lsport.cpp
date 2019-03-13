@@ -3,7 +3,7 @@
 #include <io.hpp>
 #include <core/core.hpp>
 
-void lsport(vector<string> &args)
+void lsportHandler(vector<string> &args)
 {
     if (args.size() != 2)
     {
