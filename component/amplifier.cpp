@@ -2,15 +2,15 @@
 
 #define IN_IN_1 0
 #define IN_IN_2 1
-map<string, int> Amplifier::getIn()
+vector<string> Amplifier::getIn()
 {
-    return map<string, int>{{"in_1", IN_IN_1}, {"in_2", IN_IN_2}};
+    return vector<string>{"in_1", "in_2"};
 }
 
 #define OUT_AMP 0
-map<string, int> Amplifier::getOut()
+vector<string> Amplifier::getOut()
 {
-    return map<string, int>{{"amp", OUT_AMP}};
+    return vector<string>{"amp"};
 }
 
 Amplifier::Amplifier() : Component()

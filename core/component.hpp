@@ -6,14 +6,12 @@ class Component;
 
 #include <vector>
 #include <deque>
-#include <map>
 #include <memory>
 #include <string>
 #include <uuid/uuid.h>
 #include <cereal/cereal.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/memory.hpp>
-#include <cereal/types/map.hpp>
 
 using namespace std;
 
@@ -25,7 +23,6 @@ class Component
   int loopcnt;
 
 protected:
-  string com_name;
   map<string, string> extends;
 
   void update(deque<Component *> &chcoms);
@@ -38,14 +35,15 @@ protected:
 
 public:
   uuid_t id;
+  string com_name;
   vector<PortIn_p> ins;
   vector<PortOut_p> outs;
 
   Component();
   vector<PortIn_p> getIntIns();
   vector<PortOut_p> getIntOuts();
-  virtual map<string, int> getIn(); // map だと重いし冗長な記述になるため、引数string戻り値ポートに変更予定。
-  virtual map<string, int> getOut();
+  virtual vector<string> getIn();
+  virtual vector<string> getOut();
   void initPort(int in_n, int out_n);
   void onSimStart();
   virtual void onChangeIn(deque<Component *> &chcoms);

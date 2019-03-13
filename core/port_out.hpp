@@ -24,7 +24,8 @@ class PortOut
   vector<string> exportTos();
 
 public:
-  string int_;
+  uuid_t id;
+  bool int_;
   vector<PortIn *> tos;
   vector<string> to_ids;
 

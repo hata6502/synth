@@ -20,7 +20,7 @@ public:
   double val;
   Component *com;
   PortOut_p src;
-  string int_;
+  bool int_;
 
   PortIn();
   void initVal();

@@ -9,8 +9,8 @@ class Input : public Component
 
 public:
   Input();
-  virtual map<string, int> getIn();
-  virtual map<string, int> getOut();
+  virtual vector<string> getIn();
+  virtual vector<string> getOut();
   double setValue(double value);
   virtual void onChangeTime(double dt, deque<Component *> &chcoms);
   virtual void exportExtends();

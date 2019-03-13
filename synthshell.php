@@ -1,5 +1,4 @@
 <?php
-stream_set_blocking(STDIN, false);
 $synthcore = proc_open('./synthcore', [
     '0' => ['pipe', 'r'],   // stdin
     '1' => ['pipe', 'w'],   // stdout
@@ -10,33 +9,26 @@ if (is_resource($synthcore)) {
     $stdin = $pipes[0];
     $stdout = $pipes[1];
     $stderr = $pipes[2];
-    stream_set_blocking($stdout, false);
     stream_set_blocking($stderr, false);
 
     $commandStr = "";
     $responseJson = "";
-    while (!feof(STDIN)) {
-        while (($ch = fgetc(STDIN))!==false) {
-            if ($ch == "\n") {
-                $args = preg_split("/\s/", $commandStr, -1, PREG_SPLIT_NO_EMPTY);
-                $commandStr = "";
-                execute($args);
-            } else {
-                $commandStr .= $ch;
-            }
-        }
 
-        while (($ch = fgetc($stdout))!==false) {
-            if ($ch == "\0") {
-                print_r(json_decode($responseJson));
-                $responseJson = "";
-            } else {
-                $responseJson .= $ch;
-            }
-        }
+    while (!feof(STDIN)) {
+        echo "> ";
+        $commandStr = fgets(STDIN);
+        $args = preg_split("/\s/", $commandStr, -1, PREG_SPLIT_NO_EMPTY);
+        execute($args);
 
         echo stream_get_contents($stderr);
-        usleep(10000);
+
+        $responseJson = "";
+        while (($ch = fgetc($stdout))!=="\0") {
+            $responseJson .= $ch;
+        }
+        receive(json_decode($responseJson)->response);
+
+        echo stream_get_contents($stderr);
     }
 
     fclose($stdin);
@@ -50,4 +42,29 @@ function execute($args)
     global $stdin;
 
     fwrite($stdin, json_encode(['request' => ['args' => $args]])."\0");
+}
+
+function receive($response)
+{
+    if (isset($response->error)) {
+        echo $response->error;
+    } else {
+        printResponse($response, 0);
+    }
+}
+
+function printResponse($response, $level)
+{
+    foreach ($response as $key => $value) {
+        for ($i = 0; $i < $level; $i++) {
+            echo " ";
+        }
+        echo "${key}: ";
+        if (is_array($value) || is_object($value)) {
+            echo "\n";
+            printResponse($value, $level + 2);
+        } else {
+            echo print_r($value, true)."\n";
+        }
+    }
 }

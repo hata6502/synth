@@ -17,7 +17,7 @@ vector<PortIn_p> Component::getIntIns()
 
 	for (PortIn_p &in_ : this->ins)
 	{
-		if (in_->int_ != "")
+		if (in_->int_)
 		{
 			int_ins.push_back(in_);
 		}
@@ -31,7 +31,7 @@ vector<PortOut_p> Component::getIntOuts()
 
 	for (PortOut_p &out : this->outs)
 	{
-		if (out->int_ != "")
+		if (out->int_)
 		{
 			int_outs.push_back(out);
 		}
@@ -39,14 +39,14 @@ vector<PortOut_p> Component::getIntOuts()
 	return int_outs;
 }
 
-map<string, int> Component::getIn()
+vector<string> Component::getIn()
 {
-	return map<string, int>();
+	return vector<string>();
 }
 
-map<string, int> Component::getOut()
+vector<string> Component::getOut()
 {
-	return map<string, int>();
+	return vector<string>();
 }
 
 void Component::appendIn(PortIn_p in_)

@@ -1,13 +1,10 @@
 #include <core/core.hpp>
-#include <com/com.hpp>
+#include <component/component.hpp>
+#include <command/command.hpp>
+#include <io.hpp>
 
 #include <exception>
-#include <sstream>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <cereal/cereal.hpp>
-#include <cereal/archives/json.hpp>
+#include <stdexcept>
 
 #ifdef EMSCRIPTEN
 #include <emscripten/emscripten.h>
@@ -17,24 +14,9 @@
 
 using namespace std;
 
-struct Request
-{
-    vector<string> args;
-
-    template <class Archive>
-    void serialize(Archive &archive)
-    {
-        archive(CEREAL_NVP(args));
-    }
-};
-
 extern "C"
 {
     int main(int argc, char **argv);
-    /*EMSCRIPTEN_KEEPALIVE void onSimStart();
-    EMSCRIPTEN_KEEPALIVE float *onAudioProcess(double dt);
-    EMSCRIPTEN_KEEPALIVE void onSimEnd();
-    EMSCRIPTEN_KEEPALIVE const char *export_();*/
 }
 void execute(Request &request);
 
@@ -42,59 +24,19 @@ int main(int argc, char **argv)
 {
     initCom();
 
-    /*Component *speaker1 = newCom("Speaker");
-
-    {
-        Component *input1 = newCom("Input");
-        Component *sine1 = newCom("Sine");
-
-        static_cast<Input *>(input1)->setValue(440.0);
-        sine1->ins[sine1->getIn()["freq"]]->connect(input1->outs[input1->getOut()["value"]]);
-        speaker1->ins[speaker1->getIn()["sound"]]->connect(sine1->outs[sine1->getOut()["sine"]]);
-        g_sketch.appendCom(input1);
-        g_sketch.appendCom(sine1);
-        g_sketch.appendCom(speaker1);
-    }
-
-    for (int i = 1; i < 50; i++)
-    {
-        Component *speaker2 = newCom("Speaker");
-        g_sketch.appendCom(speaker2);
-
-        speaker2->ins[speaker2->getIn()["sound"]]->connect(speaker1->outs[speaker1->getOut()["thru"]]);
-
-        speaker1 = speaker2;
-    }*/
-
-    string requestJson;
-    while (!cin.eof())
+    while (!eof())
     {
         try
         {
-            char ch;
-
-            cin >> ch;
-            if (ch == '\0')
-            {
-                Request request;
-
-                stringstream stream(requestJson);
-                {
-                    cereal::JSONInputArchive archive(stream);
-                    archive(CEREAL_NVP(request));
-                }
-                requestJson = "";
-
-                execute(request);
-            }
-            else
-            {
-                requestJson += ch;
-            }
+            Request request = receive();
+            execute(request);
         }
         catch (exception &e)
         {
-            cerr << e.what() << endl;
+            ErrorResponse response;
+
+            response.error = e.what();
+            respond(response);
         }
     }
 
@@ -103,12 +45,21 @@ int main(int argc, char **argv)
 
 void execute(Request &request)
 {
-    stringstream stream;
+    if (!request.args.size())
     {
-        cereal::JSONOutputArchive archive(stream);
-        archive(CEREAL_NVP(request));
+        throw runtime_error("");
     }
-    cout << stream.str() << '\0';
+
+    for (Command &command : g_commands)
+    {
+        if (request.args[0] == command.name)
+        {
+            command.handler(request.args);
+            return;
+        }
+    }
+
+    throw runtime_error("不明なコマンドです。\n");
 }
 
 /*EMSCRIPTEN_KEEPALIVE void onSimStart()
