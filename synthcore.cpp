@@ -1,14 +1,10 @@
-#include <request.hpp>
-#include <response.hpp>
 #include <core/core.hpp>
 #include <com/com.hpp>
+#include <command/command.hpp>
+#include <io.hpp>
 
 #include <exception>
 #include <stdexcept>
-#include <sstream>
-#include <iostream>
-#include <cereal/cereal.hpp>
-#include <cereal/archives/json.hpp>
 
 #ifdef EMSCRIPTEN
 #include <emscripten/emscripten.h>
@@ -23,49 +19,16 @@ extern "C"
     int main(int argc, char **argv);
 }
 void execute(Request &request);
-template <typename T>
-void respond(T &response);
-void addcom(vector<string> &args);
-void lscom(vector<string> &args);
-void lsport(vector<string> &args);
-void connect(vector<string> &args);
 
 int main(int argc, char **argv)
 {
     initCom();
 
-    /*Component *speaker1 = newCom("Speaker");
-
+    while (!eof())
     {
-        Component *input1 = newCom("Input");
-        Component *sine1 = newCom("Sine");
-
-        static_cast<Input *>(input1)->setValue(440.0);
-        sine1->ins[sine1->getIn()["freq"]]->connect(input1->outs[input1->getOut()["value"]]);
-        speaker1->ins[speaker1->getIn()["sound"]]->connect(sine1->outs[sine1->getOut()["sine"]]);
-        g_sketch.appendCom(input1);
-        g_sketch.appendCom(sine1);
-        g_sketch.appendCom(speaker1);
-    }
-*/
-
-    while (!cin.eof())
-    {
-        char ch;
-        string requestJson;
-        while (cin >> ch && ch != '\0')
-        {
-            requestJson += ch;
-        }
-
         try
         {
-            Request request;
-            stringstream stream(requestJson);
-            {
-                cereal::JSONInputArchive archive(stream);
-                archive(CEREAL_NVP(request));
-            }
+            Request request = receive();
             execute(request);
         }
         catch (exception &e)
@@ -120,135 +83,6 @@ void execute(Request &request)
         response.error = e.what();
         respond(response);
     }
-}
-
-template <typename T>
-void respond(T &response)
-{
-    stringstream stream;
-    {
-        cereal::JSONOutputArchive archive(stream);
-        archive(CEREAL_NVP(response));
-    }
-    cout << stream.str() << '\0';
-}
-
-void addcom(vector<string> &args)
-{
-    if (args.size() != 2)
-    {
-        throw runtime_error("構文: addcom (部品名)\n");
-    }
-
-    Component *com = newCom(args[1]);
-    if (!com)
-    {
-        throw runtime_error("不明な部品名です。\n");
-    }
-
-    g_sketch.appendCom(com);
-
-    AddcomResponse response;
-    response.uuid = uuidStr(com->id);
-    respond(response);
-}
-
-void lscom(vector<string> &args)
-{
-    LscomResponse response;
-
-    for (Component_up &com : g_sketch.coms)
-    {
-        LscomResponse::Component comResponse;
-
-        comResponse.uuid = uuidStr(com->id);
-        comResponse.type = com->com_name;
-        response.components.push_back(comResponse);
-    }
-
-    respond(response);
-}
-
-void lsport(vector<string> &args)
-{
-    if (args.size() != 2)
-    {
-        throw runtime_error("構文: lsport (部品 UUID)\n");
-    }
-
-    uuid_t uuid;
-    if (parseUuid(args[1], &uuid))
-    {
-        throw runtime_error("不正な部品 UUID です。\n");
-    }
-
-    Component *com = searchCom(uuid);
-    if (!com)
-    {
-        throw runtime_error("存在しない部品です。\n");
-    }
-
-    int i;
-    LsportResponse response;
-    vector<string> port_types;
-
-    i = 0;
-    port_types = com->getIn();
-    for (PortIn_p in : com->ins)
-    {
-        LsportResponse::PortIn inResponse;
-
-        inResponse.uuid = uuidStr(in->id);
-        inResponse.type = port_types[i++];
-        response.inputs.push_back(inResponse);
-    }
-
-    i = 0;
-    port_types = com->getOut();
-    for (PortOut_p out : com->outs)
-    {
-        LsportResponse::PortOut outResponse;
-
-        outResponse.uuid = uuidStr(out->id);
-        outResponse.type = port_types[i++];
-        response.outputs.push_back(outResponse);
-    }
-
-    respond(response);
-}
-
-void connect(vector<string> &args)
-{
-    if (args.size() != 3)
-    {
-        throw runtime_error("構文: connect (出力ポート UUID) (入力ポート UUID)\n");
-    }
-
-    uuid_t out_uuid, in_uuid;
-    if (parseUuid(args[1], &out_uuid))
-    {
-        throw runtime_error("不正な出力ポート UUID です。\n");
-    }
-    if (parseUuid(args[2], &in_uuid))
-    {
-        throw runtime_error("不正な入力ポート UUID です。\n");
-    }
-
-    PortOut_p out = searchPortOut(out_uuid);
-    if (!out)
-    {
-        throw runtime_error("存在しない出力ポートです。\n");
-    }
-    PortIn_p in = searchPortIn(in_uuid);
-    if (!in)
-    {
-        throw runtime_error("存在しない入力ポートです。\n");
-    }
-
-    in->connect(out);
-
-    EmptyResponse response;
-    respond(response);
 }
 
 /*EMSCRIPTEN_KEEPALIVE void onSimStart()

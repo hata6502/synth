@@ -12,7 +12,6 @@ class Component;
 #include <cereal/cereal.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/memory.hpp>
-#include <cereal/types/map.hpp>
 
 using namespace std;
 

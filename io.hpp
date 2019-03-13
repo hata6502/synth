@@ -1,9 +1,39 @@
 #pragma once
 
+#include <iostream>
+#include <sstream>
 #include <string>
+#include <vector>
 #include <cereal/cereal.hpp>
+#include <cereal/archives/json.hpp>
+#include <cereal/types/vector.hpp>
 
 using namespace std;
+
+struct Request;
+bool eof();
+Request receive();
+template <typename T>
+void respond(T &response)
+{
+    stringstream stream;
+    {
+        cereal::JSONOutputArchive archive(stream);
+        archive(CEREAL_NVP(response));
+    }
+    cout << stream.str() << '\0';
+}
+
+struct Request
+{
+    vector<string> args;
+
+    template <class Archive>
+    void serialize(Archive &archive)
+    {
+        archive(CEREAL_NVP(args));
+    }
+};
 
 struct ErrorResponse
 {
