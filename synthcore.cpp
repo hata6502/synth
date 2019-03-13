@@ -45,31 +45,21 @@ int main(int argc, char **argv)
 
 void execute(Request &request)
 {
-    try
+    if (!request.args.size())
     {
-        if (!request.args.size())
-        {
-            throw runtime_error("");
-        }
-
-        for (Command &command : g_commands)
-        {
-            if (request.args[0] == command.name)
-            {
-                command.handler(request.args);
-                return;
-            }
-        }
-
-        throw runtime_error("不明なコマンドです。\n");
+        throw runtime_error("");
     }
-    catch (exception &e)
+
+    for (Command &command : g_commands)
     {
-        ErrorResponse response;
-
-        response.error = e.what();
-        respond(response);
+        if (request.args[0] == command.name)
+        {
+            command.handler(request.args);
+            return;
+        }
     }
+
+    throw runtime_error("不明なコマンドです。\n");
 }
 
 /*EMSCRIPTEN_KEEPALIVE void onSimStart()
