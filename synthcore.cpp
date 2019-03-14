@@ -1,7 +1,7 @@
 #include <core/core.hpp>
 #include <component/component.hpp>
 #include <command/command.hpp>
-#include <io.hpp>
+#include <io/io.hpp>
 
 #include <exception>
 #include <stdexcept>
@@ -62,38 +62,11 @@ void execute(Request &request)
     throw runtime_error("不明なコマンドです。\n");
 }
 
-/*EMSCRIPTEN_KEEPALIVE void onSimStart()
-{
-    g_sketch.onSimStart();
-}
-
+/*
 EMSCRIPTEN_KEEPALIVE float *onAudioProcess(double dt)
 {
-    // スキップフレームは未実装。
-    try
-    {
-        float *buffer = g_buffer;
-
-        for (int i = 0; i < G_BUFFER_SIZE; i++)
-        {
-            g_spout = 0.0;
-            g_spcount = 0;
-            g_sketch.onChangeTime(dt);
-            *(buffer++) = g_spcount ? g_spout / g_spcount : 0.0;
-        }
-    }
-    catch (exception &e)
-    {
-        cerr << e.what() << endl;
-        return NULL;
-    }
 
     return g_buffer;
-}
-
-EMSCRIPTEN_KEEPALIVE void onSimEnd()
-{
-    g_sketch.onSimEnd();
 }
 
 EMSCRIPTEN_KEEPALIVE const char *export_()

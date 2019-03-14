@@ -23,7 +23,9 @@ public:
   vector<Component_up> coms;
   vector<PortIn_p> int_ins;
   vector<PortOut_p> int_outs;
+  bool onSim;
 
+  Sketch();
   void appendCom(Component *com);
   void removeCom(Component_up &com);
   void clearCom();

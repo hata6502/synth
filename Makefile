@@ -13,5 +13,5 @@ PHONY: clean
 clean:
 	-rm synthcore
 
-synthcore: Makefile *.?pp core/*.?pp component/*.?pp command/*.?pp
-	$(CC) $(OPTIONS) $(PLATFORM_OPTIONS) -o synthcore *.cpp core/*.cpp component/*.cpp command/*.cpp -luuid -lm
+synthcore: Makefile *.?pp core/*.?pp component/*.?pp command/*.?pp io/*.?pp
+	$(CC) $(OPTIONS) $(PLATFORM_OPTIONS) -o synthcore *.cpp core/*.cpp component/*.cpp command/*.cpp io/*.cpp -luuid -lm

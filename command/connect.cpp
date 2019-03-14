@@ -1,6 +1,6 @@
 #include "command.hpp"
 
-#include <io.hpp>
+#include <io/io.hpp>
 #include <core/core.hpp>
 
 void connectHandler(vector<string> &args)

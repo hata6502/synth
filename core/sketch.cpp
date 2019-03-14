@@ -3,13 +3,15 @@
 #include <algorithm>
 #include <deque>
 
-// uuid を返す
+Sketch::Sketch() : onSim(false)
+{
+}
+
 void Sketch::appendCom(Component *com)
 {
 	this->coms.push_back(Component_up(com));
 }
 
-// uuid で参照
 void Sketch::removeCom(Component_up &rm)
 {
 	this->coms.erase(remove_if(this->coms.begin(), this->coms.end(), [&](Component_up &com) -> bool { return com == rm; }), this->coms.end());
@@ -35,6 +37,8 @@ void Sketch::onSimStart()
 	{
 		com->onSimStart();
 	}
+
+	this->onSim = true;
 }
 
 void Sketch::onChangeTime(double dt)
@@ -59,6 +63,8 @@ void Sketch::onSimEnd()
 	{
 		com->onSimEnd();
 	}
+
+	this->onSim = false;
 }
 
 void Sketch::exportExtends()
