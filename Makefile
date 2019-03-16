@@ -1,6 +1,3 @@
-CC := g++
-PLATFORM_OPTIONS :=
-
 #CC := emcc
 #PLATFORM_OPTIONS := -s WASM=1 -s NO_EXIT_RUNTIME=1 -s DISABLE_EXCEPTION_CATCHING=0 -s ASSERTIONS=2 \
 	-s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]' 
@@ -13,5 +10,5 @@ PHONY: clean
 clean:
 	-rm synthcore
 
-synthcore: Makefile *.?pp core/*.?pp component/*.?pp command/*.?pp io/*.?pp
-	$(CC) $(OPTIONS) $(PLATFORM_OPTIONS) -o synthcore *.cpp core/*.cpp component/*.cpp command/*.cpp io/*.cpp -luuid -lm
+synthcore: Makefile *.?pp core/*.?pp component/*.?pp command/*.?pp playdrv/*.?pp
+	g++ $(OPTIONS) -o synthcore *.cpp core/*.cpp component/*.cpp command/*.cpp playdrv/json.cpp -luuid -lm

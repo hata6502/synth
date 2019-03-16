@@ -1,7 +1,7 @@
 #include <core/core.hpp>
 #include <component/component.hpp>
 #include <command/command.hpp>
-#include <io/io.hpp>
+#include <io.hpp>
 
 #include <exception>
 #include <stdexcept>

@@ -1,26 +1,30 @@
 #include "command.hpp"
 
-#include <io/io.hpp>
+#include <io.hpp>
 #include <core/core.hpp>
 
 void playHandler(vector<string> &args)
 {
+    if (args.size() < 2)
+    {
+        throw runtime_error("構文: play サンプリングレート ...\n");
+    }
+    double dt = 1.0 / stoi(args[1]);
+
     if (!g_sketch.onSim)
     {
         g_sketch.onSimStart();
     }
 
-    // この処理がデバイス依存になる
-    /*float *buffer = g_buffer;
+    initPlay(args);
 
-    for (int i = 0; i < G_BUFFER_SIZE; i++)
+    while (isContinuePlay())
     {
         g_spout = 0.0;
         g_spcount = 0;
         g_sketch.onChangeTime(dt);
-        *(buffer++) = g_spcount ? g_spout / g_spcount : 0.0;
-    }*/
+        storePlay(g_spcount ? g_spout / g_spcount : 0.0);
+    }
 
-    EmptyResponse response;
-    respond(response);
+    respondPlay();
 }
