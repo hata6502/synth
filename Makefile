@@ -4,11 +4,11 @@
 
 OPTIONS := -O3 -std=c++17 -I $(PWD) -I $(PWD)/cereal/include
 
-all: synthcore
+all: synth
 
 PHONY: clean
 clean:
-	-rm synthcore
+	-rm synth
 
-synthcore: Makefile *.?pp core/*.?pp component/*.?pp command/*.?pp playdrv/*.?pp
-	g++ $(OPTIONS) -o synthcore *.cpp core/*.cpp component/*.cpp command/*.cpp playdrv/json.cpp -luuid -lm
+synth: Makefile *.?pp core/*.?pp component/*.?pp command/*.?pp playdrv/*.?pp
+	g++ $(OPTIONS) -o synth *.cpp core/*.cpp component/*.cpp command/*.cpp playdrv/json.cpp -luuid -lm

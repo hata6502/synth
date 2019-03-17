@@ -1,2 +1,2 @@
 #!/bin/sh
-php synthshell.php
+php `readlink -f $0`.php
