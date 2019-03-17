@@ -1,5 +1,5 @@
 <?php
-$synthcore = proc_open('./synth', [
+$synthcore = proc_open(dirname(__FILE__).'/synth', [
     '0' => ['pipe', 'r'],   // stdin
     '1' => ['pipe', 'w'],   // stdout
     '2' => ['pipe', 'w']    // stderr
@@ -11,12 +11,8 @@ if (is_resource($synthcore)) {
     $stderr = $pipes[2];
     stream_set_blocking($stderr, false);
 
-    $commandStr = "";
-    $responseJson = "";
-
-    while (!feof(STDIN)) {
-        echo "> ";
-        $commandStr = fgets(STDIN);
+    while (($commandStr = readline('> '))!==false) {
+        readline_add_history($commandStr);
         $args = preg_split("/\s/", $commandStr, -1, PREG_SPLIT_NO_EMPTY);
         execute($args);
 

@@ -18,6 +18,11 @@ Sine::Sine() : Component()
 {
 	this->initPort(this->getIn().size(), this->getOut().size());
 	this->com_name = string(__FUNCTION__);
+}
+
+void Sine::onSimStart()
+{
+	Component::onSimStart();
 	this->phase = 0.0;
 }
 

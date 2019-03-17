@@ -59,11 +59,6 @@ void Sketch::onChangeTime(double dt)
 
 void Sketch::onSimEnd()
 {
-	for (Component_up &com : this->coms)
-	{
-		com->onSimEnd();
-	}
-
 	this->onSim = false;
 }
 

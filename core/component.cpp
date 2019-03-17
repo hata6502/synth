@@ -135,10 +135,6 @@ void Component::onChangeTime(double dt, deque<Component *> &chcoms)
 	this->loopcnt = 0;
 }
 
-void Component::onSimEnd()
-{
-}
-
 void Component::exportExtends()
 {
 	this->extends = map<string, string>();

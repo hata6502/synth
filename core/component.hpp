@@ -57,10 +57,9 @@ public:
   virtual vector<string> getOut();
   virtual vector<CallCommand> &getCallCommands();
   void initPort(int in_n, int out_n);
-  void onSimStart();
+  virtual void onSimStart();
   virtual void onChangeIn(deque<Component *> &chcoms);
   virtual void onChangeTime(double dt, deque<Component *> &chcoms);
-  void onSimEnd();
   virtual void exportExtends();
 
   template <class Archive>
