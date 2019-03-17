@@ -1,5 +1,5 @@
 <?php
-$synthcore = proc_open('./synthcore', [
+$synthcore = proc_open('./synth', [
     '0' => ['pipe', 'r'],   // stdin
     '1' => ['pipe', 'w'],   // stdout
     '2' => ['pipe', 'w']    // stderr
