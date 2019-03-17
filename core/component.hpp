@@ -18,6 +18,17 @@ using namespace std;
 typedef shared_ptr<PortIn> PortIn_p;
 typedef shared_ptr<PortOut> PortOut_p;
 
+struct CallCommand
+{
+  string name;
+  void (*handler)(Component *com, vector<string> &args);
+};
+
+#define registerCallCommand(name) \
+  {                               \
+#name, name##Handler          \
+  }
+
 class Component
 {
   int loopcnt;
@@ -44,6 +55,7 @@ public:
   vector<PortOut_p> getIntOuts();
   virtual vector<string> getIn();
   virtual vector<string> getOut();
+  virtual vector<CallCommand> &getCallCommands();
   void initPort(int in_n, int out_n);
   void onSimStart();
   virtual void onChangeIn(deque<Component *> &chcoms);

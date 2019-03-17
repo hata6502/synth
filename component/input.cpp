@@ -1,5 +1,9 @@
 #include "input.hpp"
 
+#include <io.hpp>
+
+static void setvalueHandler(Component *com, vector<string> &args);
+
 vector<string> Input::getIn()
 {
 	return vector<string>();
@@ -9,6 +13,14 @@ vector<string> Input::getIn()
 vector<string> Input::getOut()
 {
 	return vector<string>{"value"};
+}
+
+vector<CallCommand> &Input::getCallCommands()
+{
+	static vector<CallCommand> call_commands = {
+		registerCallCommand(setvalue),
+	};
+	return call_commands;
 }
 
 double Input::setValue(double value)
@@ -35,6 +47,21 @@ void Input::exportExtends()
 {
 	this->extends = map<string, string>{{"value", to_string(this->val)}};
 }
+
+#define this static_cast < Input * > (com)
+static void setvalueHandler(Component *com, vector<string> &args)
+{
+	if (args.size() != 2)
+	{
+		throw runtime_error("構文: setvalue (数値)");
+	}
+
+	this->setValue(stod(args[1]));
+
+	EmptyResponse response;
+	respond(response);
+}
+#undef this
 
 /*
 var Input = class extends Component{

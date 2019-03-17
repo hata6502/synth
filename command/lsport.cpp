@@ -7,19 +7,19 @@ void lsportHandler(vector<string> &args)
 {
     if (args.size() != 2)
     {
-        throw runtime_error("構文: lsport (部品 UUID)\n");
+        throw runtime_error("構文: lsport (部品 UUID)");
     }
 
     uuid_t uuid;
     if (parseUuid(args[1], &uuid))
     {
-        throw runtime_error("不正な部品 UUID です。\n");
+        throw runtime_error("不正な部品 UUID です。");
     }
 
     Component *com = searchCom(uuid);
     if (!com)
     {
-        throw runtime_error("存在しない部品です。\n");
+        throw runtime_error("存在しない部品です。");
     }
 
     int i;

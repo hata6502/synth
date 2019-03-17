@@ -47,7 +47,9 @@ void execute(Request &request)
 {
     if (!request.args.size())
     {
-        throw runtime_error("");
+        EmptyResponse response;
+        respond(response);
+        return;
     }
 
     for (Command &command : g_commands)
@@ -59,7 +61,7 @@ void execute(Request &request)
         }
     }
 
-    throw runtime_error("不明なコマンドです。\n");
+    throw runtime_error("不明なコマンドです。");
 }
 
 /*

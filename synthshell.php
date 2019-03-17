@@ -47,7 +47,7 @@ function execute($args)
 function receive($response)
 {
     if (isset($response->error)) {
-        echo $response->error;
+        echo $response->error."\n";
     } else {
         printResponse($response, 0);
     }

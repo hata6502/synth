@@ -27,13 +27,13 @@ void initPlay(vector<string> &args)
 {
     if (args.size() < 3)
     {
-        throw runtime_error("構文: play デルタ時間[s] サンプル数\n");
+        throw runtime_error("構文: play デルタ時間[s] サンプル数");
     }
 
     int request_buffer_size = stoi(args[2]);
     if (request_buffer_size < 0 || request_buffer_size > MAX_BUFFER_SIZE)
     {
-        throw runtime_error("サンプル数の範囲オーバーです。\n");
+        throw runtime_error("サンプル数の範囲オーバーです。");
     }
     g_buffer_size = request_buffer_size;
 

@@ -6,6 +6,7 @@ void lsportHandler(vector<string> &args);
 void connectHandler(vector<string> &args);
 void playHandler(vector<string> &args);
 void stopHandler(vector<string> &args);
+void callHandler(vector<string> &args);
 
 #define registerCommand(name) \
     {                         \
@@ -19,4 +20,5 @@ vector<Command> g_commands = {
     registerCommand(connect),
     registerCommand(play),
     registerCommand(stop),
+    registerCommand(call),
 };

@@ -49,6 +49,12 @@ vector<string> Component::getOut()
 	return vector<string>();
 }
 
+vector<CallCommand> &Component::getCallCommands()
+{
+	static vector<CallCommand> call_commands;
+	return call_commands;
+}
+
 void Component::appendIn(PortIn_p in_)
 {
 	this->ins.push_back(in_);
