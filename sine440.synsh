@@ -1,0 +1,17 @@
+# 440Hz Sine Wave synsh script. 
+# エイリアスで使える文字: 0-9a-z_
+
+# synsh コマンド判定方法: 引数が3つ
+# 動作: addcom コマンドを実行して返ってきた UUID を値、第3引数 をキーとして連想配列に追加する。
+#       さらにポート一覧の取得コマンド lsport の実行も必要。
+addcom Input as input1
+addcom Sine as sine1
+addcom Speaker as speaker1
+
+# synsh コマンド判定方法: 第1引数に.を含む
+# 動作: 第1、第2引数をポートの UUID に置き換えて connect コマンドを実行する。
+connect input1.value sine1.freq
+connect sine1.sine speaker1.sound
+
+call input1 setvalue 440.0
+

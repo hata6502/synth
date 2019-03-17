@@ -13,7 +13,8 @@ if (is_resource($synthcore)) {
 
     while (($commandStr = readline('> '))!==false) {
         readline_add_history($commandStr);
-        $args = preg_split("/\s/", $commandStr, -1, PREG_SPLIT_NO_EMPTY);
+        $commandStr = preg_replace('/#.*/', '', $commandStr);
+        $args = preg_split('/\s/', $commandStr, -1, PREG_SPLIT_NO_EMPTY);
         execute($args);
 
         echo stream_get_contents($stderr);
