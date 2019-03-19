@@ -11,21 +11,14 @@ if (is_resource($synthcore)) {
     $stderr = $pipes[2];
     stream_set_blocking($stderr, false);
 
+    $g_comNameTable = [];
+
     while (($commandStr = readline('> '))!==false) {
+        echo stream_get_contents($stderr);
         readline_add_history($commandStr);
         $commandStr = preg_replace('/#.*/', '', $commandStr);
         $args = preg_split('/\s/', $commandStr, -1, PREG_SPLIT_NO_EMPTY);
         execute($args);
-
-        echo stream_get_contents($stderr);
-
-        $responseJson = "";
-        while (($ch = fgetc($stdout))!=="\0") {
-            $responseJson .= $ch;
-        }
-        receive(json_decode($responseJson)->response);
-
-        echo stream_get_contents($stderr);
     }
 
     fclose($stdin);
@@ -34,19 +27,69 @@ if (is_resource($synthcore)) {
     proc_close($synthcore);
 }
 
-function execute($args)
+function send($args, $onSuccess)
 {
     global $stdin;
+    global $stdout;
+    global $stderr;
 
     fwrite($stdin, json_encode(['request' => ['args' => $args]])."\0");
-}
 
-function receive($response)
-{
+    echo stream_get_contents($stderr);
+    $responseJson = "";
+    while (($ch = fgetc($stdout))!=="\0") {
+        $responseJson .= $ch;
+    }
+    $response = json_decode($responseJson)->response;
+
     if (isset($response->error)) {
         echo $response->error."\n";
-    } else {
-        printResponse($response, 0);
+        return;
+    }
+
+    $onSuccess($response);
+}
+
+function isName($arg)
+{
+    return preg_match('/^[a-z_][0-9a-z_]*$/', $arg)===1;
+}
+
+function execute($args)
+{
+    // addcom (component type) as (name)
+    if (count($args)==4 && $args[0]=='addcom' && $args[2]=='as' && isName($args[3])) {
+        $name = $args[3];
+        unset($args[2]);
+        unset($args[3]);
+
+        send($args, function ($response) use ($name) {
+            $uuid = $response->uuid;
+
+            send(['lsport', $uuid], function ($response) use ($name, $uuid) {
+                $inputs = [];
+                foreach ($response->inputs as $input) {
+                    $inputs[$input->type] = $input->uuid;
+                }
+
+                $outputs = [];
+                foreach ($response->outputs as $output) {
+                    $outputs[$output->type] = $output->uuid;
+                }
+
+                $g_comNameTable[$name] = [
+                    'uuid' => $uuid,
+                    'inputs' => $inputs,
+                    'outputs' => $outputs,
+                ];
+            });
+        });
+    }
+    // default
+    else {
+        send($args, function ($response) {
+            printResponse($response, 0);
+        });
     }
 }
 
