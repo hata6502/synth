@@ -43,7 +43,7 @@ function send($args, $onSuccess)
     $response = json_decode($responseJson)->response;
 
     if (isset($response->error)) {
-        echo $response->error."\n";
+        fputs(STDERR, $response->error."\n");
         return;
     }
 
@@ -55,11 +55,65 @@ function isName($arg)
     return preg_match('/^[a-z_][0-9a-z_]*$/', $arg)===1;
 }
 
+function comUuid($arg)
+{
+    global $g_comNameTable;
+
+    if (preg_match("/^[a-z_][0-9a-z_]*$/", $arg)===0) {
+        return $arg;
+    }
+
+    if (!isset($g_comNameTable[$arg])) {
+        return $arg;
+    }
+
+    return $g_comNameTable[$arg]['uuid'];
+}
+
+function inPortUuid($arg)
+{
+    global $g_comNameTable;
+
+    if (preg_match("/^[a-z_][0-9a-z_]*\..*$/", $arg)===0) {
+        return $arg;
+    }
+
+    list($comName, $outName) = explode('.', $arg);
+    if (!isset($g_comNameTable[$comName]['inputs'][$outName])) {
+        return $arg;
+    }
+
+    return $g_comNameTable[$comName]['inputs'][$outName];
+}
+
+function outPortUuid($arg)
+{
+    global $g_comNameTable;
+
+    if (preg_match("/^[a-z_][0-9a-z_]*\..*$/", $arg)===0) {
+        return $arg;
+    }
+
+    list($comName, $outName) = explode('.', $arg);
+    if (!isset($g_comNameTable[$comName]['outputs'][$outName])) {
+        return $arg;
+    }
+
+    return $g_comNameTable[$comName]['outputs'][$outName];
+}
+
 function execute($args)
 {
+    global $g_comNameTable;
+
     // addcom (component type) as (name)
     if (count($args)==4 && $args[0]=='addcom' && $args[2]=='as' && isName($args[3])) {
         $name = $args[3];
+        if (isset($g_comNameTable[$name])) {
+            fputs(STDERR, "定義済みの名前です。\n");
+            return;
+        }
+
         unset($args[2]);
         unset($args[3]);
 
@@ -67,6 +121,8 @@ function execute($args)
             $uuid = $response->uuid;
 
             send(['lsport', $uuid], function ($response) use ($name, $uuid) {
+                global $g_comNameTable;
+
                 $inputs = [];
                 foreach ($response->inputs as $input) {
                     $inputs[$input->type] = $input->uuid;
@@ -84,13 +140,21 @@ function execute($args)
                 ];
             });
         });
+        return ;    // prevent default
     }
-    // default
-    else {
-        send($args, function ($response) {
-            printResponse($response, 0);
-        });
+    // connect (出力ポート名) (入力ポート名) ...
+    elseif (count($args)>=3 && $args[0]=='connect') {
+        $args[1] = outPortUuid($args[1]);
+        $args[2] = inPortUuid($args[2]);
     }
+    // call (コンポーネント名) ...
+    elseif (count($args)>=2 && $args[0]=='call') {
+        $args[1] = comUuid($args[1]);
+    }
+
+    send($args, function ($response) {
+        printResponse($response, 0);
+    });
 }
 
 function printResponse($response, $level)

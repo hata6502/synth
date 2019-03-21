@@ -27,7 +27,7 @@ void initPlay(vector<string> &args)
 {
     if (args.size() < 3)
     {
-        throw runtime_error("構文: play デルタ時間[s] サンプル数");
+        throw runtime_error("構文: play サンプリングレート サンプル数");
     }
 
     int request_buffer_size = stoi(args[2]);

@@ -1,5 +1,4 @@
 # 440Hz Sine Wave synsh script. 
-# エイリアスで使える文字: 0-9a-z_
 
 addcom Input as input1
 addcom Sine as sine1
@@ -11,4 +10,5 @@ connect input1.value sine1.freq
 connect sine1.sine speaker1.sound
 
 call input1 setvalue 440.0
+play 44100 16
 
