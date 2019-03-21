@@ -11,4 +11,6 @@ connect sine1.sine speaker1.sound
 
 call input1 setvalue 440.0
 play 44100 16
+stop
+play 44100 16
 
