@@ -1,9 +1,9 @@
 #pragma once
 
-#include "speaker.hpp"
+#include "amplifier.hpp"
 #include "input.hpp"
 #include "sine.hpp"
-#include "amplifier.hpp"
+#include "speaker.hpp"
 
 void initCom();
 Component *newCom(string com_name);

@@ -1,12 +1,11 @@
 #include "command.hpp"
 
-#include <io.hpp>
 #include <core/core.hpp>
+#include <io.hpp>
 
-void stopHandler(vector<string> &args)
-{
-    g_sketch.onSimEnd();
+void stopHandler(vector<string> &args) {
+  g_sketch.onSimEnd();
 
-    EmptyResponse response;
-    respond(response);
+  EmptyResponse response;
+  respond(response);
 }

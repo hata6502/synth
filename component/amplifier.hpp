@@ -3,8 +3,7 @@ class Sine;
 
 #include <core/core.hpp>
 
-class Amplifier : public Component
-{
+class Amplifier : public Component {
 public:
   Amplifier();
   virtual vector<string> getIn();

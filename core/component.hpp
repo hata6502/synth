@@ -4,33 +4,29 @@ class Component;
 #include "port_in.hpp"
 #include "port_out.hpp"
 
-#include <vector>
+#include <cereal/cereal.hpp>
+#include <cereal/types/memory.hpp>
+#include <cereal/types/vector.hpp>
 #include <deque>
 #include <memory>
 #include <string>
 #include <uuid/uuid.h>
-#include <cereal/cereal.hpp>
-#include <cereal/types/vector.hpp>
-#include <cereal/types/memory.hpp>
+#include <vector>
 
 using namespace std;
 
 typedef shared_ptr<PortIn> PortIn_p;
 typedef shared_ptr<PortOut> PortOut_p;
 
-struct CallCommand
-{
+struct CallCommand {
   string name;
   void (*handler)(Component *com, vector<string> &args);
 };
 
-#define registerCallCommand(name) \
-  {                               \
-#name, name##Handler          \
-  }
+#define registerCallCommand(name)                                              \
+  { #name, name##Handler }
 
-class Component
-{
+class Component {
   int loopcnt;
 
 protected:
@@ -62,24 +58,22 @@ public:
   virtual void onChangeTime(double dt, deque<Component *> &chcoms);
   virtual void exportExtends();
 
-  template <class Archive>
-  void serialize(Archive &archive)
-  {
+  template <class Archive> void serialize(Archive &archive) {
     char uuid_str[37];
     vector<PortIn> ins;
     vector<PortOut> outs;
 
     uuid_unparse_lower(this->id, uuid_str);
-    for (PortIn_p in_ : this->ins)
-    {
+    for (PortIn_p in_ : this->ins) {
       ins.push_back(*in_);
     }
-    for (PortOut_p out : this->outs)
-    {
+    for (PortOut_p out : this->outs) {
       outs.push_back(*out);
     }
 
-    archive(cereal::make_nvp("type", com_name), cereal::make_nvp("id", string(uuid_str)), CEREAL_NVP(ins), CEREAL_NVP(outs), CEREAL_NVP(extends));
+    archive(cereal::make_nvp("type", com_name),
+            cereal::make_nvp("id", string(uuid_str)), CEREAL_NVP(ins),
+            CEREAL_NVP(outs), CEREAL_NVP(extends));
 
     this->extends = map<string, string>();
   }

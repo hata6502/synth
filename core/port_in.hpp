@@ -4,17 +4,16 @@ class PortIn;
 #include "component.hpp"
 #include "port_out.hpp"
 
-#include <string>
-#include <memory>
-#include <uuid/uuid.h>
 #include <cereal/cereal.hpp>
+#include <memory>
+#include <string>
+#include <uuid/uuid.h>
 
 using namespace std;
 
 typedef shared_ptr<PortOut> PortOut_p;
 
-class PortIn
-{
+class PortIn {
 public:
   uuid_t id;
   double val;
@@ -27,12 +26,11 @@ public:
   void connect(PortOut_p &src);
   void disconnect();
 
-  template <class Archive>
-  void serialize(Archive &archive)
-  {
+  template <class Archive> void serialize(Archive &archive) {
     char uuid_str[37];
 
     uuid_unparse_lower(this->id, uuid_str);
-    archive(cereal::make_nvp("id", string(uuid_str)), cereal::make_nvp("int", int_));
+    archive(cereal::make_nvp("id", string(uuid_str)),
+            cereal::make_nvp("int", int_));
   }
 };

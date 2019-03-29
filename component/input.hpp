@@ -3,8 +3,7 @@ class Input;
 
 #include <core/core.hpp>
 
-class Input : public Component
-{
+class Input : public Component {
   double val;
 
 public:
