@@ -1,6 +1,6 @@
-#include <core/core.hpp>
-#include <component/component.hpp>
 #include <command/command.hpp>
+#include <component/component.hpp>
+#include <core/core.hpp>
 #include <io.hpp>
 
 #include <exception>
@@ -14,54 +14,44 @@
 
 using namespace std;
 
-extern "C"
-{
-    int main(int argc, char **argv);
+extern "C" {
+int main(int argc, char **argv);
 }
 void execute(Request &request);
 
-int main(int argc, char **argv)
-{
-    initCom();
+int main(int argc, char **argv) {
+  initCom();
 
-    while (!eof())
-    {
-        try
-        {
-            Request request = receive();
-            execute(request);
-        }
-        catch (exception &e)
-        {
-            ErrorResponse response;
+  while (!eof()) {
+    try {
+      Request request = receive();
+      execute(request);
+    } catch (exception &e) {
+      ErrorResponse response;
 
-            response.error = e.what();
-            respond(response);
-        }
+      response.error = e.what();
+      respond(response);
     }
+  }
 
-    return 0;
+  return 0;
 }
 
-void execute(Request &request)
-{
-    if (!request.args.size())
-    {
-        EmptyResponse response;
-        respond(response);
-        return;
-    }
+void execute(Request &request) {
+  if (!request.args.size()) {
+    EmptyResponse response;
+    respond(response);
+    return;
+  }
 
-    for (Command &command : g_commands)
-    {
-        if (request.args[0] == command.name)
-        {
-            command.handler(request.args);
-            return;
-        }
+  for (Command &command : g_commands) {
+    if (request.args[0] == command.name) {
+      command.handler(request.args);
+      return;
     }
+  }
 
-    throw runtime_error("不明なコマンドです。");
+  throw runtime_error("不明なコマンドです。");
 }
 
 /*
