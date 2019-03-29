@@ -3,8 +3,7 @@ class Sine;
 
 #include <core/core.hpp>
 
-class Sine : public Component
-{
+class Sine : public Component {
   double phase;
 
 public:

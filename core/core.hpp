@@ -1,9 +1,9 @@
 #pragma once
 
-#include "sketch.hpp"
 #include "component.hpp"
 #include "port_in.hpp"
 #include "port_out.hpp"
+#include "sketch.hpp"
 
 #include <string>
 #include <uuid/uuid.h>
