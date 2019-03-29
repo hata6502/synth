@@ -10,19 +10,19 @@ void connectHandler(vector<string> &args) {
 
   uuid_t out_uuid, in_uuid;
   if (parseUuid(args[1], &out_uuid)) {
-    throw runtime_error("不正な出力ポート UUID です。");
+    throw runtime_error("不正な OutPort UUID です。");
   }
   if (parseUuid(args[2], &in_uuid)) {
-    throw runtime_error("不正な入力ポート UUID です。");
+    throw runtime_error("不正な InPort UUID です。");
   }
 
   PortOut_p out = searchPortOut(out_uuid);
   if (!out) {
-    throw runtime_error("存在しない出力ポートです。");
+    throw runtime_error("存在しない OutPort です。");
   }
   PortIn_p in = searchPortIn(in_uuid);
   if (!in) {
-    throw runtime_error("存在しない入力ポートです。");
+    throw runtime_error("存在しない InPort です。");
   }
 
   in->connect(out);
