@@ -25,6 +25,7 @@ template <typename T> void respond(T &response) {
     cereal::JSONOutputArchive archive(stream);
     archive(CEREAL_NVP(response));
   }
+
   cout << stream.str() << '\0';
 }
 
