@@ -2,7 +2,6 @@
 
 double g_spout;
 int g_spcount;
-
 Sketch g_sketch;
 
 string uuidStr(uuid_t uuid)

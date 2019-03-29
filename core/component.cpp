@@ -6,7 +6,7 @@ Component::Component() : loopcnt(0)
 {
 	/*
 		this.ui_class = UiComponent;
-    */
+  */
 	uuid_generate(this->id);
 	this->com_name = string(__FUNCTION__);
 }
