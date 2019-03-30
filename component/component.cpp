@@ -21,7 +21,6 @@ void initCom() {
   g_new_com_funcs.clear();
 
   registerComponent(Speaker);
-  registerComponent(Input);
   registerComponent(Sine);
   registerComponent(Amplifier);
 }

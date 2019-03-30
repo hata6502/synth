@@ -1,7 +1,6 @@
 #pragma once
 
 #include "amplifier.hpp"
-#include "input.hpp"
 #include "sine.hpp"
 #include "speaker.hpp"
 
