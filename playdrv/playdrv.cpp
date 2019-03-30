@@ -1,9 +1,11 @@
+// Copyright 2019 BlueHood
+
 #include "playdrv.hpp"
 
 #include <string>
 #include <vector>
 
-using namespace std;
+using std::string, std::vector;
 
 #define includePlayDriver(name)                                                \
   namespace name##PlayDriver {                                                 \
