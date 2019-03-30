@@ -1,8 +1,8 @@
 #pragma once
-class PortIn;
+class InPort;
 
 #include "component.hpp"
-#include "port_out.hpp"
+#include "out_port.hpp"
 
 #include <cereal/cereal.hpp>
 #include <memory>
@@ -11,19 +11,19 @@ class PortIn;
 
 using namespace std;
 
-typedef shared_ptr<PortOut> PortOut_p;
+typedef shared_ptr<OutPort> OutPort_p;
 
-class PortIn {
+class InPort {
 public:
   uuid_t id;
   double val;
   Component *com;
-  PortOut_p src;
+  OutPort_p src;
   bool int_;
 
-  PortIn();
+  InPort();
   void initVal();
-  void connect(PortOut_p &src);
+  void connect(OutPort_p &src);
   void disconnect();
 
   template <class Archive> void serialize(Archive &archive) {

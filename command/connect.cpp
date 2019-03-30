@@ -16,11 +16,11 @@ void connectHandler(vector<string> &args) {
     throw runtime_error("不正な InPort UUID です。");
   }
 
-  PortOut_p out = searchPortOut(out_uuid);
+  OutPort_p out = searchOutPort(out_uuid);
   if (!out) {
     throw runtime_error("存在しない OutPort です。");
   }
-  PortIn_p in = searchPortIn(in_uuid);
+  InPort_p in = searchInPort(in_uuid);
   if (!in) {
     throw runtime_error("存在しない InPort です。");
   }

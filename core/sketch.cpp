@@ -20,10 +20,10 @@ void Sketch::upInterface() {
   this->int_ins.clear();
   this->int_outs.clear();
   for (Component_up &com : this->coms) {
-    vector<PortIn_p> int_ins = com->getIntIns();
+    vector<InPort_p> int_ins = com->getIntIns();
     this->int_ins.insert(this->int_ins.end(), int_ins.begin(), int_ins.end());
 
-    vector<PortOut_p> int_outs = com->getIntOuts();
+    vector<OutPort_p> int_outs = com->getIntOuts();
     this->int_outs.insert(this->int_outs.end(), int_outs.begin(),
                           int_outs.end());
   }

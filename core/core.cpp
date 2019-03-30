@@ -25,26 +25,26 @@ Component *searchCom(uuid_t uuid) {
   return nullptr;
 }
 
-PortIn_p searchPortIn(uuid_t uuid) {
+InPort_p searchInPort(uuid_t uuid) {
   for (Component_up &com : g_sketch.coms) {
-    for (PortIn_p in : com->ins) {
+    for (InPort_p in : com->ins) {
       if (!uuid_compare(uuid, in->id)) {
         return in;
       }
     }
   }
 
-  return PortIn_p(nullptr);
+  return InPort_p(nullptr);
 }
 
-PortOut_p searchPortOut(uuid_t uuid) {
+OutPort_p searchOutPort(uuid_t uuid) {
   for (Component_up &com : g_sketch.coms) {
-    for (PortOut_p out : com->outs) {
+    for (OutPort_p out : com->outs) {
       if (!uuid_compare(uuid, out->id)) {
         return out;
       }
     }
   }
 
-  return PortOut_p(nullptr);
+  return OutPort_p(nullptr);
 }

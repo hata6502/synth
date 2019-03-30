@@ -24,8 +24,8 @@ void lsportHandler(vector<string> &args) {
 
   i = 0;
   port_types = com->getIn();
-  for (PortIn_p in : com->ins) {
-    LsportResponse::PortIn inResponse;
+  for (InPort_p in : com->ins) {
+    LsportResponse::InPort inResponse;
 
     inResponse.uuid = uuidStr(in->id);
     inResponse.type = port_types[i++];
@@ -34,8 +34,8 @@ void lsportHandler(vector<string> &args) {
 
   i = 0;
   port_types = com->getOut();
-  for (PortOut_p out : com->outs) {
-    LsportResponse::PortOut outResponse;
+  for (OutPort_p out : com->outs) {
+    LsportResponse::OutPort outResponse;
 
     outResponse.uuid = uuidStr(out->id);
     outResponse.type = port_types[i++];

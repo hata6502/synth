@@ -13,7 +13,7 @@ void disconnHandler(vector<string> &args) {
     throw runtime_error("不正な InPort UUID です。");
   }
 
-  PortIn_p in = searchPortIn(uuid);
+  InPort_p in = searchInPort(uuid);
   if (!in) {
     throw runtime_error("存在しない InPort です。");
   }

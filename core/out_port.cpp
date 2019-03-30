@@ -1,41 +1,41 @@
-#include "port_out.hpp"
+#include "out_port.hpp"
 
-PortOut::PortOut() : int_(false) {
+OutPort::OutPort() : int_(false) {
   uuid_generate(this->id);
   this->initVal();
 }
 
-double PortOut::getVal() { return this->val; }
+double OutPort::getVal() { return this->val; }
 
-double PortOut::setLatch(double value) { return this->latch = value; }
+double OutPort::setLatch(double value) { return this->latch = value; }
 
-void PortOut::initVal() {
+void OutPort::initVal() {
   this->latch = 0.0;
   this->val = 0.0;
 }
 
-void PortOut::update(deque<Component *> &chcoms) {
+void OutPort::update(deque<Component *> &chcoms) {
   if (this->val != this->latch) {
     this->val = this->latch;
 
-    for (PortIn *to : this->tos) {
+    for (InPort *to : this->tos) {
       to->val = this->val;
       chcoms.push_back(to->com); // ここで重複を確認する
     }
   }
 }
 
-void PortOut::disconnectAll() {
+void OutPort::disconnectAll() {
   while (!this->tos.empty()) {
     this->tos[0]->disconnect();
   }
 }
 
-vector<string> PortOut::exportTos() {
+vector<string> OutPort::exportTos() {
   vector<string> tos;
   char uuid_str[37];
 
-  for (PortIn *to : this->tos) {
+  for (InPort *to : this->tos) {
     uuid_unparse_lower(to->id, uuid_str);
     tos.push_back(string(uuid_str));
   }
@@ -44,7 +44,7 @@ vector<string> PortOut::exportTos() {
 }
 
 /*
-var PortOut = class{
+var OutPort = class{
 
 
         import(im){
