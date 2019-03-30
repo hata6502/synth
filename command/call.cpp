@@ -5,17 +5,17 @@
 
 void callHandler(vector<string> &args) {
   if (args.size() < 3) {
-    throw runtime_error("構文: call (部品の UUID) (Call コマンド) ...");
+    throw runtime_error("構文: call (Component UUID) (Call Command) ...");
   }
 
   uuid_t uuid;
   if (parseUuid(args[1], &uuid)) {
-    throw runtime_error("不正な部品 UUID です。");
+    throw runtime_error("不正な Component UUID です。");
   }
 
   Component *com = searchCom(uuid);
   if (!com) {
-    throw runtime_error("存在しない部品です。");
+    throw runtime_error("存在しない Component です。");
   }
 
   for (CallCommand &call_command : com->getCallCommands()) {
@@ -29,5 +29,5 @@ void callHandler(vector<string> &args) {
     }
   }
 
-  throw runtime_error("不明な Call コマンドです。");
+  throw runtime_error("不明な Call Command です。");
 }

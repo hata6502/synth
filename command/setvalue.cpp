@@ -3,9 +3,9 @@
 #include <core/core.hpp>
 #include <io.hpp>
 
-void disconnHandler(vector<string> &args) {
-  if (args.size() != 2) {
-    throw runtime_error("構文: connect (InPort UUID)");
+void setvalueHandler(vector<string> &args) {
+  if (args.size() != 3) {
+    throw runtime_error("構文: setvalue (InPort UUID) (value)");
   }
 
   uuid_t uuid;
@@ -18,7 +18,7 @@ void disconnHandler(vector<string> &args) {
     throw runtime_error("存在しない InPort です。");
   }
 
-  in->disconnect();
+  in->val = stod(args[2]);
 
   EmptyResponse response;
   respond(response);

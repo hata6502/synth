@@ -75,7 +75,7 @@ struct LscomResponse {
 };
 
 struct LsportResponse {
-  struct PortIn {
+  struct InPort {
     string uuid;
     string type;
 
@@ -84,7 +84,7 @@ struct LsportResponse {
     }
   };
 
-  struct PortOut {
+  struct OutPort {
     string uuid;
     string type;
 
@@ -93,8 +93,8 @@ struct LsportResponse {
     }
   };
 
-  vector<PortIn> inputs;
-  vector<PortOut> outputs;
+  vector<InPort> inputs;
+  vector<OutPort> outputs;
 
   template <class Archive> void serialize(Archive &archive) {
     archive(CEREAL_NVP(inputs), CEREAL_NVP(outputs));

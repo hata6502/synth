@@ -1,8 +1,8 @@
 #pragma once
 class Component;
 
-#include "port_in.hpp"
-#include "port_out.hpp"
+#include "in_port.hpp"
+#include "out_port.hpp"
 
 #include <cereal/cereal.hpp>
 #include <cereal/types/memory.hpp>
@@ -15,8 +15,8 @@ class Component;
 
 using namespace std;
 
-typedef shared_ptr<PortIn> PortIn_p;
-typedef shared_ptr<PortOut> PortOut_p;
+typedef shared_ptr<InPort> InPort_p;
+typedef shared_ptr<OutPort> OutPort_p;
 
 struct CallCommand {
   string name;
@@ -33,22 +33,22 @@ protected:
   map<string, string> extends;
 
   void update(deque<Component *> &chcoms);
-  void appendIn(PortIn_p in_);
-  void removeIn(PortIn_p &rm);
+  void appendIn(InPort_p in_);
+  void removeIn(InPort_p &rm);
   void clearIn();
-  void appendOut(PortOut_p out);
-  void removeOut(PortOut_p &rm);
+  void appendOut(OutPort_p out);
+  void removeOut(OutPort_p &rm);
   void clearOut();
 
 public:
   uuid_t id;
   string com_name;
-  vector<PortIn_p> ins;
-  vector<PortOut_p> outs;
+  vector<InPort_p> ins;
+  vector<OutPort_p> outs;
 
   Component();
-  vector<PortIn_p> getIntIns();
-  vector<PortOut_p> getIntOuts();
+  vector<InPort_p> getIntIns();
+  vector<OutPort_p> getIntOuts();
   virtual vector<string> getIn();
   virtual vector<string> getOut();
   virtual vector<CallCommand> &getCallCommands();
@@ -60,14 +60,14 @@ public:
 
   template <class Archive> void serialize(Archive &archive) {
     char uuid_str[37];
-    vector<PortIn> ins;
-    vector<PortOut> outs;
+    vector<InPort> ins;
+    vector<OutPort> outs;
 
     uuid_unparse_lower(this->id, uuid_str);
-    for (PortIn_p in_ : this->ins) {
+    for (InPort_p in_ : this->ins) {
       ins.push_back(*in_);
     }
-    for (PortOut_p out : this->outs) {
+    for (OutPort_p out : this->outs) {
       outs.push_back(*out);
     }
 

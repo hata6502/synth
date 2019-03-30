@@ -9,12 +9,14 @@ void stopHandler(vector<string> &args);
 void callHandler(vector<string> &args);
 void rmcomHandler(vector<string> &args);
 void disconnHandler(vector<string> &args);
+void setvalueHandler(vector<string> &args);
 
 #define registerCommand(name)                                                  \
   { #name, name##Handler }
 
 vector<Command> g_commands = {
-    registerCommand(addcom),  registerCommand(lscom), registerCommand(lsport),
-    registerCommand(connect), registerCommand(play),  registerCommand(stop),
-    registerCommand(call),    registerCommand(rmcom), registerCommand(disconn),
+    registerCommand(addcom),   registerCommand(lscom), registerCommand(lsport),
+    registerCommand(connect),  registerCommand(play),  registerCommand(stop),
+    registerCommand(call),     registerCommand(rmcom), registerCommand(disconn),
+    registerCommand(setvalue),
 };

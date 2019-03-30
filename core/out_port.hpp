@@ -1,8 +1,8 @@
 #pragma once
-class PortOut;
+class OutPort;
 
 #include "component.hpp"
-#include "port_in.hpp"
+#include "in_port.hpp"
 
 #include <cereal/cereal.hpp>
 #include <cereal/types/vector.hpp>
@@ -14,9 +14,9 @@ class PortOut;
 
 using namespace std;
 
-typedef shared_ptr<PortIn> PortIn_p;
+typedef shared_ptr<InPort> InPort_p;
 
-class PortOut {
+class OutPort {
   double val;
   double latch;
 
@@ -25,13 +25,13 @@ class PortOut {
 public:
   uuid_t id;
   bool int_;
-  vector<PortIn *> tos;
+  vector<InPort *> tos;
   vector<string> to_ids;
 
-  PortOut();
+  OutPort();
   double getVal();
   double setLatch(double value);
-  void initVal();
+  // void initVal();
   void update(deque<Component *> &chcoms);
   void disconnectAll();
 

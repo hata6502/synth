@@ -2,8 +2,8 @@
 class Sketch;
 
 #include "component.hpp"
-#include "port_in.hpp"
-#include "port_out.hpp"
+#include "in_port.hpp"
+#include "out_port.hpp"
 
 #include <cereal/cereal.hpp>
 #include <cereal/types/memory.hpp>
@@ -14,14 +14,14 @@ class Sketch;
 using namespace std;
 
 typedef unique_ptr<Component> Component_up;
-typedef shared_ptr<PortIn> PortIn_p;
-typedef shared_ptr<PortOut> PortOut_p;
+typedef shared_ptr<InPort> InPort_p;
+typedef shared_ptr<OutPort> OutPort_p;
 
 class Sketch {
 public:
   vector<Component_up> coms;
-  vector<PortIn_p> int_ins;
-  vector<PortOut_p> int_outs;
+  vector<InPort_p> int_ins;
+  vector<OutPort_p> int_outs;
   bool onSim;
 
   Sketch();
