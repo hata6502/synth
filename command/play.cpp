@@ -5,7 +5,7 @@
 
 void playHandler(vector<string> &args) {
   if (args.size() < 2) {
-    throw runtime_error("構文: play サンプリングレート ...");
+    throw runtime_error("構文: play (sampling rate) ...");
   }
   double dt = 1.0 / stoi(args[1]);
 
