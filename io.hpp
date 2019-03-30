@@ -14,10 +14,6 @@ struct Request;
 
 bool eof();
 Request receive();
-void initPlay(vector<string> &args);
-bool isContinuePlay();
-void storePlay(double sample);
-void respondPlay();
 
 template <typename T> void respond(T &response) {
   stringstream stream;

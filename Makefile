@@ -11,4 +11,4 @@ clean:
 	-rm synth
 
 synth: Makefile *.?pp core/*.?pp component/*.?pp command/*.?pp playdrv/*.?pp
-	g++ $(OPTIONS) -o synth *.cpp core/*.cpp component/*.cpp command/*.cpp playdrv/json.cpp -luuid -lm
+	g++ $(OPTIONS) -o synth *.cpp core/*.cpp component/*.cpp command/*.cpp playdrv/*.cpp -luuid -lm
