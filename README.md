@@ -6,6 +6,7 @@
 
 ただし、synth の操作は標準入出力にて JSON 形式で行います。
 ユーザーからの直接入力は想定していません。
+コマンドラインで操作するには [synsh](https://github.com/blue-hood/synsh) をインストールしてください。
 
 ## インストール
 1. `git clone --recursive` でリポジトリをダウンロードします。
