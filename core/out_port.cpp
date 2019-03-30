@@ -2,17 +2,17 @@
 
 OutPort::OutPort() : int_(false) {
   uuid_generate(this->id);
-  this->initVal();
+  // this->initVal();
 }
 
 double OutPort::getVal() { return this->val; }
 
 double OutPort::setLatch(double value) { return this->latch = value; }
 
-void OutPort::initVal() {
+/*void OutPort::initVal() {
   this->latch = 0.0;
   this->val = 0.0;
-}
+}*/
 
 void OutPort::update(deque<Component *> &chcoms) {
   if (this->val != this->latch) {

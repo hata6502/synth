@@ -4,10 +4,10 @@ typedef shared_ptr<InPort> InPort_p;
 
 InPort::InPort() : com(nullptr), src(OutPort_p(nullptr)), int_(false) {
   uuid_generate(this->id);
-  this->initVal();
+  // this->initVal();
 }
 
-void InPort::initVal() { this->val = 0.0; }
+// void InPort::initVal() { this->val = 0.0; }
 
 void InPort::connect(OutPort_p &src) {
   this->disconnect();

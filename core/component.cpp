@@ -84,12 +84,12 @@ void Component::update(deque<Component *> &chcoms) {
 }
 
 void Component::onSimStart() {
-  for (InPort_p &in_ : this->ins) {
+  /*for (InPort_p &in_ : this->ins) {
     in_->initVal();
   }
   for (OutPort_p &out : this->outs) {
     out->initVal();
-  }
+  }*/
 }
 
 void Component::onChangeIn(deque<Component *> &chcoms) {

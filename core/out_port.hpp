@@ -31,7 +31,7 @@ public:
   OutPort();
   double getVal();
   double setLatch(double value);
-  void initVal();
+  // void initVal();
   void update(deque<Component *> &chcoms);
   void disconnectAll();
 

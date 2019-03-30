@@ -22,7 +22,7 @@ public:
   bool int_;
 
   InPort();
-  void initVal();
+  // void initVal();
   void connect(OutPort_p &src);
   void disconnect();
 
