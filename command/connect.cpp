@@ -1,9 +1,11 @@
+// Copyright 2019 BlueHood
+
 #include "command.hpp"
 
 #include <core/core.hpp>
 #include <io.hpp>
 
-void connectHandler(vector<string> &args) {
+void connectHandler(const vector<string> &args) {
   if (args.size() != 3) {
     throw runtime_error("構文: connect (OutPort UUID) (InPort UUID)");
   }

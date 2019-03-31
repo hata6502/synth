@@ -1,10 +1,12 @@
+// Copyright 2019 BlueHood
+
 #include "command.hpp"
 
 #include <component/component.hpp>
 #include <core/core.hpp>
 #include <io.hpp>
 
-void addcomHandler(vector<string> &args) {
+void addcomHandler(const vector<string> &args) {
   if (args.size() != 2) {
     throw runtime_error("構文: addcom (Component Type)");
   }
