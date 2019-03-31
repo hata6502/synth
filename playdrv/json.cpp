@@ -20,8 +20,9 @@ struct PlayResponse {
 static PlayResponse g_response;
 static int g_buffer_size;
 
-namespace JsonPlayDriver {
-void init(vector<string> &args) {
+/* インライン関数にしたい */
+
+void initPlay(const vector<string> &args) {
   if (args.size() < 3) {
     throw runtime_error("構文: play サンプリングレート サンプル数");
   }
@@ -35,10 +36,8 @@ void init(vector<string> &args) {
   g_response.samples.clear();
 }
 
-bool isContinue() { return g_response.samples.size() < g_buffer_size; }
+bool isContinuePlay() { return g_response.samples.size() < g_buffer_size; }
 
-void store(double sample) { g_response.samples.push_back(sample); }
+void storePlay(double sample) { g_response.samples.push_back(sample); }
 
-void respond() { respond(g_response); }
-
-} // namespace JsonPlayDriver
+void respondPlay() { respond(g_response); }

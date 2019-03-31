@@ -15,6 +15,10 @@ struct Request;
 
 bool eof();
 Request receive();
+void initPlay(const std::vector<std::string> &args);
+bool isContinuePlay();
+void storePlay(double sample);
+void respondPlay();
 
 template <typename T> void respond(const T &response) {
   std::stringstream stream;

@@ -17,18 +17,18 @@ struct PlayResponse {
   }
 };
 
-namespace WasmPlayDriver {
-void init(vector<string> &args) { g_buffer_index = 0; }
+/* インライン関数にしたい */
 
-bool isContinue() { return g_buffer_index < G_BUFFER_SIZE; }
+void initPlay(const vector<string> &args) { g_buffer_index = 0; }
 
-void store(double sample) {
+bool isContinuePlay() { return g_buffer_index < G_BUFFER_SIZE; }
+
+void storePlay(double sample) {
   g_buffer[g_buffer_index++] = static_cast<float>(sample);
 }
 
-void respond() {
+void respondPlay() {
   PlayResponse response;
   response.address = reinterpret_cast<uintptr_t>(g_buffer);
   respond(response);
 }
-} // namespace WasmPlayDriver
