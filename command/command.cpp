@@ -1,15 +1,22 @@
+// Copyright 2019 BlueHood
+
 #include "command.hpp"
 
-void addcomHandler(vector<string> &args);
-void lscomHandler(vector<string> &args);
-void lsportHandler(vector<string> &args);
-void connectHandler(vector<string> &args);
-void playHandler(vector<string> &args);
-void stopHandler(vector<string> &args);
-void callHandler(vector<string> &args);
-void rmcomHandler(vector<string> &args);
-void disconnHandler(vector<string> &args);
-void setvalueHandler(vector<string> &args);
+#include <string>
+#include <vector>
+
+using std::vector, std::string;
+
+void addcomHandler(const vector<string> &args);
+void lscomHandler(const vector<string> &args);
+void lsportHandler(const vector<string> &args);
+void connectHandler(const vector<string> &args);
+void playHandler(const vector<string> &args);
+void stopHandler(const vector<string> &args);
+void callHandler(const vector<string> &args);
+void rmcomHandler(const vector<string> &args);
+void disconnHandler(const vector<string> &args);
+void setvalueHandler(const vector<string> &args);
 
 #define registerCommand(name)                                                  \
   { #name, name##Handler }

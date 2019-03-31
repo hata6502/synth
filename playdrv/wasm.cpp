@@ -1,7 +1,9 @@
-#include "io.hpp"
+// Copyright 2019 BlueHood
 
-#include <cereal/cereal.hpp>
 #include <cstdint>
+
+#include "io.hpp"
+#include <cereal/cereal.hpp>
 
 #define G_BUFFER_SIZE 2048
 static float g_buffer[G_BUFFER_SIZE];
@@ -10,7 +12,7 @@ static int g_buffer_index;
 struct PlayResponse {
   uintptr_t address;
 
-  template <class Archive> void serialize(Archive &archive) {
+  template <class Archive> void serialize(Archive &archive) { // NOLINT
     archive(CEREAL_NVP(address));
   }
 };

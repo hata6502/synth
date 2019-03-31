@@ -1,9 +1,11 @@
+// Copyright 2019 BlueHood
+
 #include "command.hpp"
 
 #include <core/core.hpp>
 #include <io.hpp>
 
-void callHandler(vector<string> &args) {
+void callHandler(const vector<string> &args) {
   if (args.size() < 3) {
     throw runtime_error("構文: call (Component UUID) (Call Command) ...");
   }

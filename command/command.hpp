@@ -1,13 +1,13 @@
+// Copyright 2019 BlueHood
+
 #pragma once
 
 #include <string>
 #include <vector>
 
-using namespace std;
-
 struct Command {
-  string name;
-  void (*handler)(vector<string> &args);
+  std::string name;
+  void (*handler)(const std::vector<std::string> &args);
 };
 
-extern vector<Command> g_commands;
+extern std::vector<Command> g_commands;
