@@ -1,3 +1,5 @@
+// Copyright 2019 BlueHood
+
 #include "core.hpp"
 
 double g_spout;
@@ -11,7 +13,7 @@ string uuidStr(uuid_t uuid) {
   return string(uuid_str);
 }
 
-int parseUuid(string &uuid_str, uuid_t *uuid) {
+int parseUuid(const string &uuid_str, uuid_t *uuid) {
   return uuid_parse(uuid_str.c_str(), *uuid);
 }
 

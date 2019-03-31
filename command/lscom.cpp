@@ -1,9 +1,11 @@
+// Copyright 2019 BlueHood
+
 #include "command.hpp"
 
 #include <core/core.hpp>
 #include <io.hpp>
 
-void lscomHandler(vector<string> &args) {
+void lscomHandler(const vector<string> &args) {
   LscomResponse response;
 
   for (Component_up &com : g_sketch.coms) {

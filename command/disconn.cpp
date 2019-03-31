@@ -1,9 +1,11 @@
+// Copyright 2019 BlueHood
+
 #include "command.hpp"
 
 #include <core/core.hpp>
 #include <io.hpp>
 
-void disconnHandler(vector<string> &args) {
+void disconnHandler(const vector<string> &args) {
   if (args.size() != 2) {
     throw runtime_error("構文: connect (InPort UUID)");
   }

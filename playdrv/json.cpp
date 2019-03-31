@@ -1,16 +1,18 @@
-#include "io.hpp"
+// Copyright 2019 BlueHood
 
-#include <cereal/cereal.hpp>
 #include <vector>
 
-using namespace std;
+#include "io.hpp"
+#include <cereal/cereal.hpp>
+
+using std::vector, std::string, std::runtime_error;
 
 #define MAX_BUFFER_SIZE (256 * 256 * 16)
 
 struct PlayResponse {
   vector<double> samples;
 
-  template <class Archive> void serialize(Archive &archive) {
+  template <class Archive> void serialize(Archive &archive) { // NOLINT
     archive(CEREAL_NVP(samples));
   }
 };
@@ -20,7 +22,7 @@ static int g_buffer_size;
 
 /* インライン関数にしたい */
 
-void initPlay(vector<string> &args) {
+void initPlay(const vector<string> &args) {
   if (args.size() < 3) {
     throw runtime_error("構文: play サンプリングレート サンプル数");
   }
