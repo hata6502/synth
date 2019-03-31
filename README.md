@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/blue-hood/synth.svg?branch=master)](https://travis-ci.org/blue-hood/synth)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
 # synth
