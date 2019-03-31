@@ -8,3 +8,7 @@ Issue ID をそのままブランチ名とすることを推奨します。
 clang-format にてデフォルト設定のコード整形を行うことを推奨します。
 
 ```$ clang-format -i (cpp hpp ファイル)```
+
+さらに cpplint で静的コードチェックをすることを推奨します。
+
+```$ cpplint (cpp hpp ファイル)```
