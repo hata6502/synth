@@ -1,0 +1,4 @@
+plugins:
+  cppcheck:
+    enabled: true
+    
