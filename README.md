@@ -1,4 +1,3 @@
-<a href="https://codeclimate.com/github/blue-hood/synth/maintainability"><img src="https://api.codeclimate.com/v1/badges/52d745c04c74564f970e/maintainability" /></a>
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
 # synth
