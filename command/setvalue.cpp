@@ -7,7 +7,7 @@
 
 void setvalueHandler(const vector<string> &args) {
   if (args.size() != 3) {
-    throw runtime_error("構文: setvalue (InPort UUID) (value)");
+    throw runtime_error("Syntax: setvalue (InPort UUID) (value)");
   }
 
   uuid_t uuid;
