@@ -5,6 +5,8 @@
 #include "io.hpp"
 #include <cereal/cereal.hpp>
 
+using std::vector, std::string;
+
 #define G_BUFFER_SIZE 2048
 static float g_buffer[G_BUFFER_SIZE];
 static int g_buffer_index;
@@ -18,7 +20,7 @@ struct PlayResponse {
 };
 
 namespace WasmPlayDriver {
-void init(vector<string> &args) { g_buffer_index = 0; }
+void init(const vector<string> &args) { g_buffer_index = 0; }
 
 bool isContinue() { return g_buffer_index < G_BUFFER_SIZE; }
 

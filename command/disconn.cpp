@@ -7,7 +7,7 @@
 
 void disconnHandler(const vector<string> &args) {
   if (args.size() != 2) {
-    throw runtime_error("構文: connect (InPort UUID)");
+    throw runtime_error("Syntax: connect (InPort UUID)");
   }
 
   uuid_t uuid;

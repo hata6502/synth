@@ -1,3 +1,5 @@
+// Copyright 2019 BlueHood
+
 #pragma once
 
 #include <string>
@@ -5,7 +7,7 @@
 
 struct PlayDriver {
   std::string name;
-  void (*init)(std::vector<std::string> &args);
+  void (*init)(const std::vector<std::string> &args);
   bool (*isContinue)();
   void (*store)(double sample);
   void (*respond)();

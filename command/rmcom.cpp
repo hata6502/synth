@@ -7,7 +7,7 @@
 
 void rmcomHandler(const vector<string> &args) {
   if (args.size() != 2) {
-    throw runtime_error("構文: rmcom (Component UUID)");
+    throw runtime_error("Syntax: rmcom (Component UUID)");
   }
 
   uuid_t uuid;

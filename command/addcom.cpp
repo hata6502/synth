@@ -8,7 +8,7 @@
 
 void addcomHandler(const vector<string> &args) {
   if (args.size() != 2) {
-    throw runtime_error("構文: addcom (Component Type)");
+    throw runtime_error("Syntax: addcom (Component Type)");
   }
 
   Component *com = newCom(args[1]);

@@ -7,7 +7,7 @@
 
 void lsportHandler(const vector<string> &args) {
   if (args.size() != 2) {
-    throw runtime_error("構文: lsport (Component UUID)");
+    throw runtime_error("Syntax: lsport (Component UUID)");
   }
 
   uuid_t uuid;

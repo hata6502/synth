@@ -9,13 +9,14 @@ using std::string, std::vector;
 
 #define includePlayDriver(name)                                                \
   namespace name##PlayDriver {                                                 \
-    void init(vector<string> &args);                                           \
+    void init(const vector<string> &args);                                     \
     bool isContinue();                                                         \
     void store(double sample);                                                 \
     void respond();                                                            \
   }
 
-includePlayDriver(Json) includePlayDriver(Wasm)
+includePlayDriver(Json);
+includePlayDriver(Wasm);
 
 #define registerPlayDriver(name)                                               \
   {                                                                            \
@@ -23,7 +24,7 @@ includePlayDriver(Json) includePlayDriver(Wasm)
         name##PlayDriver::store, name##PlayDriver::respond,                    \
   }
 
-    vector<PlayDriver> g_playDrivers = {
-        registerPlayDriver(Json),
-        registerPlayDriver(Wasm),
+vector<PlayDriver> g_playDrivers = {
+    registerPlayDriver(Json),
+    registerPlayDriver(Wasm),
 };

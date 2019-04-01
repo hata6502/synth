@@ -7,7 +7,7 @@
 
 void connectHandler(const vector<string> &args) {
   if (args.size() != 3) {
-    throw runtime_error("構文: connect (OutPort UUID) (InPort UUID)");
+    throw runtime_error("Syntax: connect (OutPort UUID) (InPort UUID)");
   }
 
   uuid_t out_uuid, in_uuid;
