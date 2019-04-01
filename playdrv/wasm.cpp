@@ -33,4 +33,5 @@ void respond() {
   response.address = reinterpret_cast<uintptr_t>(g_buffer);
   respond(response);
 }
+
 } // namespace WasmPlayDriver

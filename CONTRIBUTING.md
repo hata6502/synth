@@ -12,3 +12,5 @@ clang-format にてデフォルト設定のコード整形を行うことを推�
 さらに cpplint で静的コードチェックをすることを推奨します。
 
 ```$ cpplint (cpp hpp ファイル)```
+
+これらのコーディングチェックを自動化するには、[blue-hood/.git_template](https://github.com/blue-hood/.git_template) を導入してください。

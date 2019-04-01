@@ -41,4 +41,5 @@ bool isContinue() { return g_response.samples.size() < g_buffer_size; }
 void store(double sample) { g_response.samples.push_back(sample); }
 
 void respond() { respond(g_response); }
+
 } // namespace JsonPlayDriver
