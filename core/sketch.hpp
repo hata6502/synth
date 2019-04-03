@@ -1,27 +1,27 @@
+// Copyright 2019 BlueHood
+
 #pragma once
 class Sketch;
+
+#include <memory>
+#include <vector>
 
 #include "component.hpp"
 #include "in_port.hpp"
 #include "out_port.hpp"
-
 #include <cereal/cereal.hpp>
 #include <cereal/types/memory.hpp>
 #include <cereal/types/vector.hpp>
-#include <memory>
-#include <vector>
 
-using namespace std;
-
-typedef unique_ptr<Component> Component_up;
-typedef shared_ptr<InPort> InPort_p;
-typedef shared_ptr<OutPort> OutPort_p;
+typedef std::unique_ptr<Component> Component_up;
+typedef std::unique_ptr<InPort> InPort_up;
+typedef std::unique_ptr<OutPort> OutPort_up;
 
 class Sketch {
 public:
-  vector<Component_up> coms;
-  vector<InPort_p> int_ins;
-  vector<OutPort_p> int_outs;
+  std::vector<Component_up> coms;
+  std::vector<InPort *> int_ins;
+  std::vector<OutPort *> int_outs;
   bool onSim;
 
   Sketch();
@@ -34,8 +34,8 @@ public:
   void onSimEnd();
   void exportExtends();
 
-  template <class Archive> void serialize(Archive &archive) {
-    vector<Component> coms;
+  template <class Archive> void serialize(Archive &archive) { // NOLINT
+    std::vector<Component> coms;
 
     for (Component_up &com : this->coms) {
       coms.push_back(*com);

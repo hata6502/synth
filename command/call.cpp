@@ -5,6 +5,8 @@
 #include <core/core.hpp>
 #include <io.hpp>
 
+using std::vector, std::string, std::runtime_error;
+
 void callHandler(const vector<string> &args) {
   if (args.size() < 3) {
     throw runtime_error("Syntax: call (Component UUID) (Call Command) ...");

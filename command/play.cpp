@@ -6,6 +6,8 @@
 #include <io.hpp>
 #include <playdrv/playdrv.hpp>
 
+using std::vector, std::string, std::runtime_error;
+
 void playHandler(const vector<string> &args) {
   if (args.size() < 3) {
     throw runtime_error("Syntax: play (sampling rate) (Play Driver) ...");

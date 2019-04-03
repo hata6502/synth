@@ -1,26 +1,28 @@
+// Copyright 2019 BlueHood
+
 #pragma once
 class Component;
 
+#include <uuid/uuid.h>
+
+#include <deque>
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "in_port.hpp"
 #include "out_port.hpp"
-
 #include <cereal/cereal.hpp>
 #include <cereal/types/memory.hpp>
 #include <cereal/types/vector.hpp>
-#include <deque>
-#include <memory>
-#include <string>
-#include <uuid/uuid.h>
-#include <vector>
 
-using namespace std;
-
-typedef shared_ptr<InPort> InPort_p;
-typedef shared_ptr<OutPort> OutPort_p;
+typedef std::unique_ptr<InPort> InPort_up;
+typedef std::unique_ptr<OutPort> OutPort_up;
 
 struct CallCommand {
-  string name;
-  void (*handler)(Component *com, vector<string> &args);
+  std::string name;
+  void (*handler)(Component *com, const std::vector<std::string> &args);
 };
 
 #define registerCallCommand(name)                                              \
@@ -30,51 +32,51 @@ class Component {
   int loopcnt;
 
 protected:
-  map<string, string> extends;
+  std::map<std::string, std::string> extends;
 
-  void update(deque<Component *> &chcoms);
-  void appendIn(InPort_p in_);
-  void removeIn(InPort_p &rm);
+  void update(std::deque<Component *> *chcoms);
+  void appendIn(InPort *in_);
+  void removeIn(InPort *rm);
   void clearIn();
-  void appendOut(OutPort_p out);
-  void removeOut(OutPort_p &rm);
+  void appendOut(OutPort *out);
+  void removeOut(OutPort *rm);
   void clearOut();
 
 public:
   uuid_t id;
-  string com_name;
-  vector<InPort_p> ins;
-  vector<OutPort_p> outs;
+  std::string com_name;
+  std::vector<InPort_up> ins;
+  std::vector<OutPort_up> outs;
 
   Component();
-  vector<InPort_p> getIntIns();
-  vector<OutPort_p> getIntOuts();
-  virtual vector<string> getIn();
-  virtual vector<string> getOut();
-  virtual vector<CallCommand> &getCallCommands();
+  std::vector<InPort *> getIntIns();
+  std::vector<OutPort *> getIntOuts();
+  virtual std::vector<std::string> getIn();
+  virtual std::vector<std::string> getOut();
+  virtual std::vector<CallCommand> &getCallCommands();
   void initPort(int in_n, int out_n);
   virtual void onSimStart();
-  virtual void onChangeIn(deque<Component *> &chcoms);
-  virtual void onChangeTime(double dt, deque<Component *> &chcoms);
+  virtual void onChangeIn(std::deque<Component *> *chcoms);
+  virtual void onChangeTime(double dt, std::deque<Component *> *chcoms);
   virtual void exportExtends();
 
-  template <class Archive> void serialize(Archive &archive) {
+  template <class Archive> void serialize(Archive &archive) { // NOLINT
     char uuid_str[37];
-    vector<InPort> ins;
-    vector<OutPort> outs;
+    std::vector<InPort> ins;
+    std::vector<OutPort> outs;
 
     uuid_unparse_lower(this->id, uuid_str);
-    for (InPort_p in_ : this->ins) {
+    for (InPort_up &in_ : this->ins) {
       ins.push_back(*in_);
     }
-    for (OutPort_p out : this->outs) {
+    for (OutPort_up &out : this->outs) {
       outs.push_back(*out);
     }
 
     archive(cereal::make_nvp("type", com_name),
-            cereal::make_nvp("id", string(uuid_str)), CEREAL_NVP(ins),
+            cereal::make_nvp("id", std::string(uuid_str)), CEREAL_NVP(ins),
             CEREAL_NVP(outs), CEREAL_NVP(extends));
 
-    this->extends = map<string, string>();
+    this->extends = std::map<std::string, std::string>();
   }
 };

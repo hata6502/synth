@@ -5,6 +5,8 @@
 #include <core/core.hpp>
 #include <io.hpp>
 
+using std::vector, std::string, std::runtime_error;
+
 void lsportHandler(const vector<string> &args) {
   if (args.size() != 2) {
     throw runtime_error("Syntax: lsport (Component UUID)");
@@ -26,7 +28,7 @@ void lsportHandler(const vector<string> &args) {
 
   i = 0;
   port_types = com->getIn();
-  for (InPort_p &in : com->ins) {
+  for (InPort_up &in : com->ins) {
     LsportResponse::InPort inResponse;
 
     inResponse.uuid = uuidStr(in->id);
@@ -42,7 +44,7 @@ void lsportHandler(const vector<string> &args) {
 
   i = 0;
   port_types = com->getOut();
-  for (OutPort_p &out : com->outs) {
+  for (OutPort_up &out : com->outs) {
     LsportResponse::OutPort outResponse;
 
     outResponse.uuid = uuidStr(out->id);

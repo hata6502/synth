@@ -1,4 +1,12 @@
+// Copyright 2019 BlueHood
+
+#include <deque>
+#include <string>
+#include <vector>
+
 #include "amplifier.hpp"
+
+using std::vector, std::string, std::deque;
 
 #define IN_IN_1 0
 #define IN_IN_2 1
@@ -12,7 +20,7 @@ Amplifier::Amplifier() : Component() {
   this->com_name = string(__FUNCTION__);
 }
 
-void Amplifier::onChangeIn(deque<Component *> &chcoms) {
+void Amplifier::onChangeIn(deque<Component *> *chcoms) {
   Component::onChangeIn(chcoms);
   this->outs[OUT_AMP]->setLatch(this->ins[IN_IN_1]->val *
                                 this->ins[IN_IN_2]->val);

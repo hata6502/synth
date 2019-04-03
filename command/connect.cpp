@@ -5,6 +5,8 @@
 #include <core/core.hpp>
 #include <io.hpp>
 
+using std::vector, std::string, std::runtime_error;
+
 void connectHandler(const vector<string> &args) {
   if (args.size() != 3) {
     throw runtime_error("Syntax: connect (OutPort UUID) (InPort UUID)");
@@ -18,11 +20,11 @@ void connectHandler(const vector<string> &args) {
     throw runtime_error("不正な InPort UUID です。");
   }
 
-  OutPort_p out = searchOutPort(out_uuid);
+  OutPort *out = searchOutPort(out_uuid);
   if (!out) {
     throw runtime_error("存在しない OutPort です。");
   }
-  InPort_p in = searchInPort(in_uuid);
+  InPort *in = searchInPort(in_uuid);
   if (!in) {
     throw runtime_error("存在しない InPort です。");
   }

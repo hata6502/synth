@@ -5,6 +5,8 @@
 #include <core/core.hpp>
 #include <io.hpp>
 
+using std::vector, std::string, std::runtime_error;
+
 void rmcomHandler(const vector<string> &args) {
   if (args.size() != 2) {
     throw runtime_error("Syntax: rmcom (Component UUID)");

@@ -1,6 +1,14 @@
-#include "sine.hpp"
+// Copyright 2019 BlueHood
 
 #include <math.h>
+
+#include <deque>
+#include <string>
+#include <vector>
+
+#include "sine.hpp"
+
+using std::vector, std::string, std::deque;
 
 #define IN_FREQ 0
 vector<string> Sine::getIn() { return vector<string>{"freq"}; }
@@ -18,7 +26,7 @@ void Sine::onSimStart() {
   this->phase = 0.0;
 }
 
-void Sine::onChangeTime(double dt, deque<Component *> &chcoms) {
+void Sine::onChangeTime(double dt, deque<Component *> *chcoms) {
   Component::onChangeTime(dt, chcoms);
   this->outs[OUT_SINE]->setLatch(sin(this->phase));
   this->phase += this->ins[IN_FREQ]->val * dt * 2.0 * M_PI;

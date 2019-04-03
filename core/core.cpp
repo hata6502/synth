@@ -1,6 +1,10 @@
 // Copyright 2019 BlueHood
 
+#include <string>
+
 #include "core.hpp"
+
+using std::string;
 
 double g_spout;
 int g_spcount;
@@ -27,26 +31,26 @@ Component *searchCom(uuid_t uuid) {
   return nullptr;
 }
 
-InPort_p searchInPort(uuid_t uuid) {
+InPort *searchInPort(uuid_t uuid) {
   for (Component_up &com : g_sketch.coms) {
-    for (InPort_p in : com->ins) {
+    for (InPort_up &in : com->ins) {
       if (!uuid_compare(uuid, in->id)) {
-        return in;
+        return in.get();
       }
     }
   }
 
-  return InPort_p(nullptr);
+  return nullptr;
 }
 
-OutPort_p searchOutPort(uuid_t uuid) {
+OutPort *searchOutPort(uuid_t uuid) {
   for (Component_up &com : g_sketch.coms) {
-    for (OutPort_p out : com->outs) {
+    for (OutPort_up &out : com->outs) {
       if (!uuid_compare(uuid, out->id)) {
-        return out;
+        return out.get();
       }
     }
   }
 
-  return OutPort_p(nullptr);
+  return nullptr;
 }
