@@ -1,9 +1,11 @@
+// Copyright 2019 BlueHood
+
 #include "component.hpp"
 
 #include <string>
 #include <vector>
 
-using namespace std;
+using std::string, std::vector;
 
 static vector<string> g_com_names;
 static vector<Component *(*)(string)> g_new_com_funcs;

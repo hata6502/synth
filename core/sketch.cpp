@@ -1,7 +1,12 @@
+// Copyright 2019 BlueHood
+
 #include "sketch.hpp"
 
 #include <algorithm>
 #include <deque>
+#include <vector>
+
+using std::vector, std::deque;
 
 Sketch::Sketch() : onSim(false) {}
 
@@ -20,10 +25,10 @@ void Sketch::upInterface() {
   this->int_ins.clear();
   this->int_outs.clear();
   for (Component_up &com : this->coms) {
-    vector<InPort_p> int_ins = com->getIntIns();
+    vector<InPort *> int_ins = com->getIntIns();
     this->int_ins.insert(this->int_ins.end(), int_ins.begin(), int_ins.end());
 
-    vector<OutPort_p> int_outs = com->getIntOuts();
+    vector<OutPort *> int_outs = com->getIntOuts();
     this->int_outs.insert(this->int_outs.end(), int_outs.begin(),
                           int_outs.end());
   }
@@ -41,11 +46,11 @@ void Sketch::onChangeTime(double dt) {
   deque<Component *> chcoms;
 
   for (Component_up &com : this->coms) {
-    com->onChangeTime(dt, chcoms);
+    com->onChangeTime(dt, &chcoms);
   }
 
   while (!chcoms.empty()) {
-    chcoms.front()->onChangeIn(chcoms);
+    chcoms.front()->onChangeIn(&chcoms);
     chcoms.pop_front();
   }
 }

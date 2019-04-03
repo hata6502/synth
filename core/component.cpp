@@ -1,6 +1,13 @@
+// Copyright 2019 BlueHood
+
 #include "component.hpp"
 
+#include <deque>
+#include <map>
 #include <stdexcept>
+#include <string>
+
+using std::vector, std::deque, std::string, std::map, std::runtime_error;
 
 Component::Component() : loopcnt(0) {
   /*
@@ -10,23 +17,23 @@ Component::Component() : loopcnt(0) {
   this->com_name = string(__FUNCTION__);
 }
 
-vector<InPort_p> Component::getIntIns() {
-  vector<InPort_p> int_ins;
+vector<InPort *> Component::getIntIns() {
+  vector<InPort *> int_ins;
 
-  for (InPort_p &in_ : this->ins) {
+  for (InPort_up &in_ : this->ins) {
     if (in_->int_) {
-      int_ins.push_back(in_);
+      int_ins.push_back(in_.get());
     }
   }
   return int_ins;
 }
 
-vector<OutPort_p> Component::getIntOuts() {
-  vector<OutPort_p> int_outs;
+vector<OutPort *> Component::getIntOuts() {
+  vector<OutPort *> int_outs;
 
-  for (OutPort_p &out : this->outs) {
+  for (OutPort_up &out : this->outs) {
     if (out->int_) {
-      int_outs.push_back(out);
+      int_outs.push_back(out.get());
     }
   }
   return int_outs;
@@ -41,26 +48,30 @@ vector<CallCommand> &Component::getCallCommands() {
   return call_commands;
 }
 
-void Component::appendIn(InPort_p in_) {
-  this->ins.push_back(in_);
+void Component::appendIn(InPort *in_) {
+  this->ins.push_back(InPort_up(in_));
   in_->com = this;
 }
 
-void Component::removeIn(InPort_p &rm) {
-  this->ins.erase(remove_if(this->ins.begin(), this->ins.end(),
-                            [&](InPort_p &in_) -> bool { return in_ == rm; }),
-                  this->ins.end());
+void Component::removeIn(InPort *rm) {
+  this->ins.erase(
+      remove_if(this->ins.begin(), this->ins.end(),
+                [&](InPort_up &in_) -> bool { return in_.get() == rm; }),
+      this->ins.end());
   rm->com = nullptr;
 }
 
 void Component::clearIn() { this->ins.clear(); }
 
-void Component::appendOut(OutPort_p out) { this->outs.push_back(out); }
+void Component::appendOut(OutPort *out) {
+  this->outs.push_back(OutPort_up(out));
+}
 
-void Component::removeOut(OutPort_p &rm) {
-  this->outs.erase(remove_if(this->outs.begin(), this->outs.end(),
-                             [&](OutPort_p &out) -> bool { return out == rm; }),
-                   this->outs.end());
+void Component::removeOut(OutPort *rm) {
+  this->outs.erase(
+      remove_if(this->outs.begin(), this->outs.end(),
+                [&](OutPort_up &out) -> bool { return out.get() == rm; }),
+      this->outs.end());
 }
 
 void Component::clearOut() { this->outs.clear(); }
@@ -68,17 +79,17 @@ void Component::clearOut() { this->outs.clear(); }
 void Component::initPort(int in_n, int out_n) {
   this->clearIn();
   for (int i = 0; i < in_n; i++) {
-    this->appendIn(InPort_p(new InPort()));
+    this->appendIn(new InPort());
   }
 
   this->clearOut();
   for (int i = 0; i < out_n; i++) {
-    this->appendOut(OutPort_p(new OutPort()));
+    this->appendOut(new OutPort());
   }
 }
 
-void Component::update(deque<Component *> &chcoms) {
-  for (OutPort_p &out : this->outs) {
+void Component::update(deque<Component *> *chcoms) {
+  for (OutPort_up &out : this->outs) {
     out->update(chcoms);
   }
 }
@@ -92,14 +103,14 @@ void Component::onSimStart() {
   }*/
 }
 
-void Component::onChangeIn(deque<Component *> &chcoms) {
+void Component::onChangeIn(deque<Component *> *chcoms) {
   if (++this->loopcnt >= 256) {
     throw runtime_error("無限ループが発生しました。問題を解決するために Buffer "
                         "を入れてください。");
   }
 }
 
-void Component::onChangeTime(double dt, deque<Component *> &chcoms) {
+void Component::onChangeTime(double dt, deque<Component *> *chcoms) {
   this->loopcnt = 0;
 }
 

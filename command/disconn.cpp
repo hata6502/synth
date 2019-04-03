@@ -5,6 +5,8 @@
 #include <core/core.hpp>
 #include <io.hpp>
 
+using std::vector, std::string, std::runtime_error;
+
 void disconnHandler(const vector<string> &args) {
   if (args.size() != 2) {
     throw runtime_error("Syntax: connect (InPort UUID)");
@@ -15,7 +17,7 @@ void disconnHandler(const vector<string> &args) {
     throw runtime_error("不正な InPort UUID です。");
   }
 
-  InPort_p in = searchInPort(uuid);
+  InPort *in = searchInPort(uuid);
   if (!in) {
     throw runtime_error("存在しない InPort です。");
   }

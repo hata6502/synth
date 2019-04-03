@@ -1,4 +1,12 @@
+// Copyright 2019 BlueHood
+
+#include <deque>
+#include <string>
+#include <vector>
+
 #include "out_port.hpp"
+
+using std::deque, std::string, std::vector;
 
 OutPort::OutPort() : int_(false) {
   uuid_generate(this->id);
@@ -14,13 +22,13 @@ double OutPort::setLatch(double value) { return this->latch = value; }
   this->val = 0.0;
 }*/
 
-void OutPort::update(deque<Component *> &chcoms) {
+void OutPort::update(deque<Component *> *chcoms) {
   if (this->val != this->latch) {
     this->val = this->latch;
 
     for (InPort *to : this->tos) {
       to->val = this->val;
-      chcoms.push_back(to->com); // ここで重複を確認する
+      chcoms->push_back(to->com); // ここで重複を確認する
     }
   }
 }

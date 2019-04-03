@@ -1,4 +1,12 @@
+// Copyright 2019 BlueHood
+
+#include <deque>
+#include <string>
+#include <vector>
+
 #include "speaker.hpp"
+
+using std::vector, std::string, std::deque;
 
 #define IN_SOUND 0
 vector<string> Speaker::getIn() { return vector<string>{"sound"}; }
@@ -11,7 +19,7 @@ Speaker::Speaker() : Component() {
   this->com_name = string(__FUNCTION__);
 }
 
-void Speaker::onChangeTime(double dt, deque<Component *> &chcoms) {
+void Speaker::onChangeTime(double dt, deque<Component *> *chcoms) {
   Component::onChangeTime(dt, chcoms);
   // マルチスレッドのとき排他制御すること
   g_spout += this->outs[OUT_THRU]->setLatch(this->ins[IN_SOUND]->val);

@@ -5,6 +5,8 @@
 #include <core/core.hpp>
 #include <io.hpp>
 
+using std::vector, std::string;
+
 void lscomHandler(const vector<string> &args) {
   LscomResponse response;
 
